@@ -1,0 +1,17 @@
+#content {
+    height: '100vh'
+}
+
+#top {
+    height: '25vh';
+    background-color: dodgerblue;
+}
+
+#main-content {
+    height: '60vh'
+}
+
+#bottom {
+    height: '15vh';
+    background-color: dodgerblue;
+}
