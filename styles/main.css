@@ -10,28 +10,44 @@ body {
     display: flex;
 }
 
-#top-middle {
+#top-left, #top-middle, #top-right {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #banner {
-    width: 40%; height: auto;
+    width: 100%; height: auto;
     font-size: 2.35vw;
     letter-spacing: 0.18vw;
     text-align: center;
+    font-family: 'Nanum Gothic';
     color: rgb(38,35,38);
     background-color: rgb(251,251,251);
     border: 0.1em solid dodgerblue; 
     border-radius: 20em;
-    box-shadow: 0.0em 0.16em 0.2em gray;
+    box-shadow: 0.065em 0.16em 0.2em gray;
+    padding: 1.37vw 1.67vw;
+    margin: auto;
+}
+
+#banner-button {
+    width: 100%; height: auto;
+    font-size: 2.35vw;
+    letter-spacing: 0.18vw;
+    text-align: center;
+    font-family: 'Nanum Gothic';
+    color: rgb(38,35,38);
+    background-color: rgb(251,251,251);
+    border: 0.1em solid darkorange; 
+    border-radius: 20em;
+    box-shadow: 0.065em 0.16em 0.2em rgb(240,160,0);
     padding: 1.37vw 1.67vw;
     margin: auto;
 }
 
 #main-content {
-    height: 65vh;
+    height: 72vh;
     background-color: rgb(22,20,21);
     display: flex;
     justify-content: center;
@@ -43,11 +59,35 @@ body {
     background-color: rgb(251,251,251);
     border: 0.28vw solid darkgray;
     border-radius: 2.75vw;
+    box-shadow: 0.4vw 0.4vw 2vw black;
     text-align: center;
 }
 
+#welcome {
+    height: 100%;
+    font-size: 6vh;
+    padding-bottom: 5%;
+    padding-left: 5%; padding-right: 5%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    text-align: center;
+}
+
+.modal-input {
+    margin-top: 2.25%; 
+    height: 20%; width: 65%;
+    font-size: 3.5vh;
+    color: rgb(40,40,40)
+}
+
+.small-modal-text {
+    font-size: 2.25vh
+}
+
 #bottom {
-    height: 13vh;
-    background-color: white;
+    height: 7vh;
+    background-image: linear-gradient(to bottom, rgb(250,250,250), rgb(225,225,225), rgb(225,225,225), rgb(141,141,141));
+    background-repeat: no-repeat;
     border-top: 0.28vw solid darkgray
 }
