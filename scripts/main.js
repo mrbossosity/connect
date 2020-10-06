@@ -66,18 +66,19 @@ $("#username, #peer-id").on('keydown', (e) => {
 
 
 //TODO: initiate a connection, start sending mediastream
+var call
 function initConn(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
-        video: true
+        video: {facingMode: 'user'}
     }).then((stream) => {
         vid = document.getElementById("left-video");
         vid.srcObject = stream;
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
-        peer.call(id, stream, {
-            metadata: { 'username': username}
+        call = peer.call(id, stream, {
+            metadata: { 'username': username }
         })
     })
 }
@@ -96,7 +97,7 @@ $("#call-id").on('keydown', (e) => {
 
 
 //TODO: receive a call
-peer.on('call', (call) => {
+peer.on('call', function(call) {
     $("#call-modal").hide(300);
     alert('Incoming call!')
     navigator.mediaDevices.getUserMedia({
