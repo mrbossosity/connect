@@ -3,15 +3,15 @@ body {
 }
 
 #top {
-    height: '25vh';
+    height: 20vh;
     background-color: dodgerblue;
 }
 
 #main-content {
-    height: '60vh'
+    height: 65vh
 }
 
 #bottom {
-    height: '15vh';
+    height: 15vh;
     background-color: dodgerblue;
 }
