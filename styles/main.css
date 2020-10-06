@@ -10,22 +10,40 @@ body {
     display: flex;
 }
 
+#top-middle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #banner {
+    width: 40%; height: auto;
     font-size: 2.35vw;
     letter-spacing: 0.18vw;
+    text-align: center;
     color: rgb(38,35,38);
     background-color: rgb(251,251,251);
-    width: 50%;
     border: 0.1em solid dodgerblue; 
     border-radius: 20em;
-    box-shadow: 0.085em 0.16em 0.2em gray;
+    box-shadow: 0.0em 0.16em 0.2em gray;
     padding: 1.37vw 1.67vw;
     margin: auto;
-    margin-top: 3vh;
 }
 
 #main-content {
-    height: 65vh
+    height: 65vh;
+    background-color: rgb(22,20,21);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-modal {
+    height: 55vh; width: 40%;
+    background-color: rgb(251,251,251);
+    border: 0.28vw solid darkgray;
+    border-radius: 2.75vw;
+    text-align: center;
 }
 
 #bottom {
