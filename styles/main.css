@@ -1,10 +1,27 @@
 body {
-    margin: 0
+    margin: 0;
+    font-family: 'Nanum Gothic';
 }
 
 #top {
-    height: 20vh;
-    background-color: dodgerblue;
+    height: 20vh; width: 100vw;
+    background-color: white;
+    border-bottom: 0.28vw solid darkgray; 
+    display: flex;
+}
+
+#banner {
+    font-size: 2.35vw;
+    letter-spacing: 0.18vw;
+    color: rgb(38,35,38);
+    background-color: rgb(251,251,251);
+    width: 50%;
+    border: 0.1em solid dodgerblue; 
+    border-radius: 20em;
+    box-shadow: 0.085em 0.16em 0.2em gray;
+    padding: 1.37vw 1.67vw;
+    margin: auto;
+    margin-top: 3vh;
 }
 
 #main-content {
@@ -12,6 +29,7 @@ body {
 }
 
 #bottom {
-    height: 15vh;
-    background-color: dodgerblue;
+    height: 13vh;
+    background-color: white;
+    border-top: 0.28vw solid darkgray
 }
