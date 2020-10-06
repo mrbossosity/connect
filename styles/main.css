@@ -16,6 +16,13 @@ body {
     align-items: center;
 }
 
+#bottom {
+    height: 7vh;
+    background-image: linear-gradient(to bottom, rgb(250,250,250), rgb(225,225,225), rgb(225,225,225), rgb(141,141,141));
+    background-repeat: no-repeat;
+    border-top: 0.28vw solid darkgray
+}
+
 #banner {
     width: 100%; height: auto;
     font-size: 2.35vw;
@@ -66,7 +73,6 @@ body {
 #welcome {
     height: 100%;
     font-size: 6vh;
-    padding-bottom: 5%;
     padding-left: 5%; padding-right: 5%;
     display: flex;
     align-items: flex-end;
@@ -81,13 +87,55 @@ body {
     color: rgb(40,40,40)
 }
 
+#call-modal {
+    height: 45vh; width: 30%;
+    background-color: rgb(251,251,251);
+    border: 0.28vw solid darkgray;
+    border-radius: 2.75vw;
+    box-shadow: 0.4vw 0.4vw 2vw black;
+    text-align: center;
+}
+
+#call-modal-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-left: 5%; padding-right: 5%;
+}
+
+#wait-or-call {
+    height: 27%; width: 100%;
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-end
+}
+
 .small-modal-text {
     font-size: 2.25vh
 }
 
-#bottom {
-    height: 7vh;
-    background-image: linear-gradient(to bottom, rgb(250,250,250), rgb(225,225,225), rgb(225,225,225), rgb(141,141,141));
-    background-repeat: no-repeat;
-    border-top: 0.28vw solid darkgray
+.medium-modal-text {
+    font-size: 3.5vh
 }
+
+#video-container {
+    width: 100%; height: 100%;
+    display: flex;
+}
+
+#left-video-container, #right-video-container {
+    width: 49%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#left-video-container {
+    background-color: dodgerblue;
+}
+
+#left-video, #right-video {
+    width: 100%; height: auto;
+    max-height: 100%;
+}
+

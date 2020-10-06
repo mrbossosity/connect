@@ -22,17 +22,41 @@
             </div>
             <div id="main-content">
                 <div id="main-modal">
-                    <div id="modal-top" style="height: 49.75%;">
+                    <div id="modal-top" style="height: 48.75%;">
                         <div id="welcome">Welcome to Connect!</div>
                     </div>
                     <hr>
-                    <div id="inputs-container" style="height: 49.75%;">
-                        <input type="text" id="username" class="modal-input">
+                    <div id="inputs-container" style="height: 50.25;">
+                        <input type="text" id="username" class="modal-input" style="margin-bottom: 1%;">
                         <div class="small-modal-text"><span>your name</span></div>
-                        <input type="text" id="peer-id" class="modal-input">
+                        <input type="text" id="peer-id" class="modal-input" style="margin-bottom: 1%;">
                         <div class="small-modal-text"><span>your peer id (optional)</span></div>
                     </div>
                 </div> <!--end modal-->
+                <div id="call-modal">
+                    <div id="call-modal-top" style="height: 57.75%;">
+                        <div style="height: 50%; display: flex; align-items: center;">
+                            <div id="your-id" style="width: 100%; text-align: center;" class="small-modal-text"></div>
+                        </div>
+                        <div id = "wait-or-call">
+                            <div class="small-modal-text" style="width: 100%; text-align: center;">Wait for a call or</div>
+                            <div class="medium-modal-text" style="width: 100%; text-align: center; margin-top: 1%;">Phone a friend?</div>
+                        </div>
+                    </div>
+                    <div id="call-modal-bottom" style="height: 49.75%;">
+                        <input type="text" id="call-id" class="modal-input">
+                        <div class="small-modal-text" style="margin-top: 2%;"><span>your friend's peer ID</span></div>
+                    </div>
+                </div> <!--end modal-->
+                <div id="video-container">
+                    <div id="left-video-container">
+                        <video id="left-video"></video>
+                    </div>
+                    <div id="divider" style="width: 1.5%; height: 100%"></div>
+                    <div id="right-video-container">
+                        <video id="right-video"></video>
+                    </div>
+                </div> <!--end video container-->
             </div> <!--end main-content-->
             <div id="bottom"></div>
         </div>

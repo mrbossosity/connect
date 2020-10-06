@@ -1,4 +1,6 @@
 $("#banner-button").hide()
+$("#call-modal").hide()
+$("#video-container").hide()
 var connectButton = 'hidden'
 function showButton() {
     if (connectButton == 'hidden') {
@@ -12,7 +14,7 @@ $("#username").keydown(() => {
 })
 
 //TODO: Get text input, assign username metadata? and peer ID
-var username, peerID
+var peer, username, peerID
 
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 function makeID() {
@@ -38,17 +40,59 @@ function getInfo() {
     username = $("#username").val()
     getID();
     console.log(`NAME: ${username}, ID: ${peerID}`);
-    $("#main-modal").hide(300)
+    $("#main-modal").hide(300);
+    $("#call-modal").show(600)
 }
 
-$("#banner-button").click(() => {
+function welcome(name, id) {
+    str = `Welcome, ${name}! Your ID is <span style="font-size: 2.9vh; vertical-align: baseline">${id}</span>`
+    $("#your-id").html(str)
+}
+
+function firstFunctions() {
     getInfo();
-    var peer = new Peer(peerID, {
+    peer = new Peer(peerID, {
         debug: 2
     });
-    console.log(peer)
+    console.log(peer);
+    welcome(username, peerID)
+}
+
+$("#username, #peer-id").on('keydown', (e) => {
+    if (e.keyCode === 13) {
+        firstFunctions()
+    }
 })
+
 
 //TODO: initiate a connection, start sending mediastream
 
+function initConn(id) {
+    navigator.mediaDevices.getUserMedia({
+        audio: true, 
+        video: true
+    }).then(function(stream) {
+        vid = document.getElementById("left-video");
+        vid.srcObject = stream;
+        vid.onloadedmetadata = (e) => {
+            vid.play()
+        }
+        peer.call(id, stream)
+    })
+}
+
+function connectionFunctions() {
+    $("#call-modal").hide(300)
+    $("#video-container").show()
+    var callerID = $("#call-id").val()
+    initConn(callerID)
+}
+$("#call-id").on('keydown', (e) => {
+    if (e.keyCode === 13) {
+        connectionFunctions()
+    }
+})
+
+
+//TODO: receive a call
 //TODO: Change the page layout accordingly to host two videostreams
