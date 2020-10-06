@@ -66,18 +66,19 @@ $("#username, #peer-id").on('keydown', (e) => {
 
 
 //TODO: initiate a connection, start sending mediastream
-
 function initConn(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
         video: true
-    }).then(function(stream) {
+    }).then((stream) => {
         vid = document.getElementById("left-video");
         vid.srcObject = stream;
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
-        peer.call(id, stream)
+        peer.call(id, stream, {
+            metadata: { 'username': username}
+        })
     })
 }
 
@@ -95,4 +96,30 @@ $("#call-id").on('keydown', (e) => {
 
 
 //TODO: receive a call
+peer.on('call', (call) => {
+    $("#call-modal").hide(300);
+    alert('Incoming call!')
+    navigator.mediaDevices.getUserMedia({
+        audio: true, 
+        video: {facingMode: 'user'}
+    }).then((stream) => {
+        vid = document.getElementById("left-video");
+        vid.srcObject = stream;
+        vid.onloadedmetadata = (e) => {
+            vid.play()
+        }
+        call.answer(stream);
+    })
+})
+
+//TODO: alert incoming call
+
+//TODO: stream peer stream in vid element
+call.on('stream', (peerStream) => {
+    peerVid = document.getElementById("right-video");
+    peerVid.srcObject = peerStream;
+    peerVid.onloadedmetadata = (e) => {
+        peerVid.play()
+    }
+})
 //TODO: Change the page layout accordingly to host two videostreams
