@@ -1,10 +1,10 @@
-$("#banner-button").hide()
+$("#banner-orange").hide()
 $("#call-modal").hide()
 $("#video-container").hide()
 var connectButton = 'hidden'
 function showButton() {
     if (connectButton == 'hidden') {
-        $("#banner-button").show();
+        $("#banner-orange").show();
         connectButton = 'shown';
         $("#banner").hide()
     } 
