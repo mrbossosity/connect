@@ -102,6 +102,7 @@ function makePeer(id) {
     })
 }
 
+var outgoingCall
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
@@ -112,21 +113,10 @@ function initCall(id) {
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
-        peer.call(id, stream, {
+        outgoingCall = peer.call(id, stream, {
             metadata: { 'username': username }
         })
-        call.on('stream', (peerStream) => {
-            peerVid = document.getElementById("right-video");
-            peerVid.srcObject = peerStream;
-            peerVid.onloadedmetadata = (e) => {
-                peerVid.play()
-            }
-            $("#left-video-username").html(username)
-            var peerName = call.metadata.username
-            $("#right-video-username").html(peerName)
-            $("#left-video-controls").show(300)
-            $("#right-video-controls").show(300)
-        })
+        receiveStream(outgoingCall)
     })
 }
 
