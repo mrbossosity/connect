@@ -1,6 +1,7 @@
 $("#banner-orange").hide()
 $("#call-modal").hide()
 $("#video-container").hide()
+$("#username").focus()
 var connectButton = 'hidden'
 function showButton() {
     if (connectButton == 'hidden') {
@@ -105,6 +106,7 @@ function firstFunctions() {
     getInfo();
     makePeer(peerID);
     welcome(username, peerID);
+    $("#call-id").focus()
 }
 
 $("#username, #peer-id").on('keydown', (e) => {
