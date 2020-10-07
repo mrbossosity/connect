@@ -102,21 +102,6 @@ function makePeer(id) {
     })
 }
 
-function firstFunctions() {
-    getInfo();
-    makePeer(peerID);
-    welcome(username, peerID);
-    $("#call-id").focus()
-}
-
-$("#username, #peer-id").on('keydown', (e) => {
-    if (e.keyCode === 13) {
-        firstFunctions()
-    }
-})
-
-
-var call
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
@@ -127,11 +112,30 @@ function initCall(id) {
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
-        call = peer.call(id, stream, {
+        peer.call(id, stream, {
             metadata: { 'username': username }
         })
-        receiveStream(call)
+        call.on('stream', (peerStream) => {
+            peerVid = document.getElementById("right-video");
+            peerVid.srcObject = peerStream;
+            peerVid.onloadedmetadata = (e) => {
+                peerVid.play()
+            }
+            $("#left-video-username").html(username)
+            var peerName = call.metadata.username
+            $("#right-video-username").html(peerName)
+            $("#left-video-controls").show(300)
+            $("#right-video-controls").show(300)
+        })
     })
+}
+
+
+function firstFunctions() {
+    getInfo();
+    makePeer(peerID);
+    welcome(username, peerID);
+    $("#call-id").focus()
 }
 
 function connectionFunctions() {
@@ -140,6 +144,12 @@ function connectionFunctions() {
     var callerID = $("#call-id").val()
     initCall(callerID)
 }
+
+$("#username, #peer-id").on('keydown', (e) => {
+    if (e.keyCode === 13) {
+        firstFunctions()
+    }
+})
 
 $("#call-id").on('keydown', (e) => {
     if (e.keyCode === 13) {
