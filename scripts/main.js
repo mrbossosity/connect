@@ -60,14 +60,15 @@ function answerCall(call) {
         audio: true, 
         video: {facingMode: 'user'}
     }).then((stream) => {
+        call.answer(stream, {
+            metadata: { 'username': username }
+        });
+
         vid = document.getElementById("left-video");
         vid.srcObject = stream;
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
-        call.answer(stream, {
-            metadata: { 'username': username }
-        });
         call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
             peerVid.srcObject = peerStream;
@@ -95,7 +96,6 @@ function makePeer(id) {
     })
 }
 
-var call
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
