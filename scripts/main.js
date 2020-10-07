@@ -80,6 +80,30 @@ function answerCall(call) {
             $("#left-video-controls").show(300)
             $("#right-video-controls").show(300)
         })
+        call.on('close', () => {
+            stream.getTracks().forEach(track => track.stop());
+            try {call.close()} catch {};
+            try {peer.disconnect()} catch {};
+            try {peer.destroy()} catch{};
+            $("#banner").show();
+            $("#banner-orange").hide();
+            $("#video-container").hide();
+            $("#main-modal").show(600);
+            $("#username").focus();
+            alert('Call ended')
+        })
+        call.on('error', (err) => {
+            stream.getTracks().forEach(track => track.stop());
+            try {call.close(); console.log('call closed')} catch {};
+            try {peer.disconnect(); console.log('disconnected')} catch {};
+            try {peer.destroy(); console.log('destroyed')} catch{};
+            $("#banner").show();
+            $("#banner-orange").hide();
+            $("#video-container").hide();
+            $("#main-modal").show(600);
+            $("#username").focus();
+            alert(`Oops! Something went wrong. Try refreshing the page. ${err}`)
+        })
     })
 }
 
