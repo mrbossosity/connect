@@ -130,10 +130,6 @@ body {
     justify-content: center;
 }
 
-#left-video-container {
-    background-color: dodgerblue;
-}
-
 #left-video, #right-video {
     width: 100%; height: auto;
     max-height: 100%;

@@ -63,12 +63,20 @@ function makePeer(id) {
                 audio: true, 
                 video: {facingMode: 'user'}
             }).then((stream) => {
+                call.answer(stream);
+                console.log('sending stream')
                 vid = document.getElementById("left-video");
                 vid.srcObject = stream;
                 vid.onloadedmetadata = (e) => {
                     vid.play()
                 }
-                call.answer(stream);
+                call.on('stream', (peerStream) => {
+                    peerVid = document.getElementById("right-video");
+                    peerVid.srcObject = peerStream;
+                    peerVid.onloadedmetadata = (e) => {
+                        peerVid.play()
+                    }
+                })
             })
         })
     })
