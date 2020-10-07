@@ -49,6 +49,30 @@ function welcome(name, id) {
     $("#your-id").html(str)
 }
 
+function answerCall(call) {
+    $("#call-modal").hide(300);
+    console.log('call incoming!')
+    navigator.mediaDevices.getUserMedia({
+        audio: true, 
+        video: {facingMode: 'user'}
+    }).then((stream) => {
+        vid = document.getElementById("left-video");
+        vid.srcObject = stream;
+        vid.onloadedmetadata = (e) => {
+            vid.play()
+        }
+        console.log('sending stream')
+        call.answer(stream);
+        call.on('stream', (peerStream) => {
+            peerVid = document.getElementById("right-video");
+            peerVid.srcObject = peerStream;
+            peerVid.onloadedmetadata = (e) => {
+                peerVid.play()
+            }
+        })
+    })
+}
+
 function makePeer(id) {
     peer = new Peer(id, {
         debug: 2
@@ -57,27 +81,7 @@ function makePeer(id) {
     var delay = Promise.resolve()
     .then(() => {
         peer.on('call', (call) => {
-            $("#call-modal").hide(300);
-            console.log('call incoming!')
-            navigator.mediaDevices.getUserMedia({
-                audio: true, 
-                video: {facingMode: 'user'}
-            }).then((stream) => {
-                call.answer(stream);
-                console.log('sending stream')
-                vid = document.getElementById("left-video");
-                vid.srcObject = stream;
-                vid.onloadedmetadata = (e) => {
-                    vid.play()
-                }
-                call.on('stream', (peerStream) => {
-                    peerVid = document.getElementById("right-video");
-                    peerVid.srcObject = peerStream;
-                    peerVid.onloadedmetadata = (e) => {
-                        peerVid.play()
-                    }
-                })
-            })
+            answerCall(call)
         })
     })
 }
