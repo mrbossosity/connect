@@ -58,7 +58,7 @@ function makePeer(id) {
     .then(() => {
         peer.on('call', (call) => {
             $("#call-modal").hide(300);
-            alert('Incoming call!');
+            console.log('call incoming!')
             navigator.mediaDevices.getUserMedia({
                 audio: true, 
                 video: {facingMode: 'user'}
