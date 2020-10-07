@@ -50,28 +50,15 @@ function welcome(name, id) {
 }
 
 function receiveStream(call) {
-    call.on('stream', (peerStream) => {
-        peerVid = document.getElementById("right-video");
-        peerVid.srcObject = peerStream;
-        peerVid.onloadedmetadata = (e) => {
-            peerVid.play()
-        }
-        $("#left-video-username").html(username)
-        var peerName = call.metadata.username
-        $("#right-video-username").html(peerName)
-        $("#left-video-controls").show(300)
-        $("#right-video-controls").show(300)
-    })
+    
 }
 
 function answerCall(call) {
-    var peerName = call.metadata.username
     alert(`Incoming call from ${peerName}!`);
     $("#call-modal").hide(300);
     $("#video-container").show();
     $("#left-video-controls").hide()
     $("#right-video-controls").hide()
-    console.log('call incoming!')
     navigator.mediaDevices.getUserMedia({
         audio: true, 
         video: {facingMode: 'user'}
@@ -81,11 +68,21 @@ function answerCall(call) {
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
-        console.log('sending stream')
         call.answer(stream, {
             metadata: { 'username': username }
         });
-        receiveStream(call)
+        call.on('stream', (peerStream) => {
+            peerVid = document.getElementById("right-video");
+            peerVid.srcObject = peerStream;
+            peerVid.onloadedmetadata = (e) => {
+                peerVid.play()
+            }
+            $("#left-video-username").html(username)
+            var peerName = call.metadata.username
+            $("#right-video-username").html(peerName)
+            $("#left-video-controls").show(300)
+            $("#right-video-controls").show(300)
+        })
     })
 }
 
@@ -116,7 +113,18 @@ function initCall(id) {
         outgoingCall = peer.call(id, stream, {
             metadata: { 'username': username }
         })
-        receiveStream(outgoingCall)
+        outgoingCall.on('stream', (peerStream) => {
+            peerVid = document.getElementById("right-video");
+            peerVid.srcObject = peerStream;
+            peerVid.onloadedmetadata = (e) => {
+                peerVid.play()
+            }
+            $("#left-video-username").html(username)
+            var peerName = outgoingCall.metadata.username
+            $("#right-video-username").html(peerName)
+            $("#left-video-controls").show(300)
+            $("#right-video-controls").show(300)
+        })
     })
 }
 
