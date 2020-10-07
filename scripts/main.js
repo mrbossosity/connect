@@ -14,7 +14,7 @@ $("#username").keydown(() => {
 })
 
 //TODO: Get text input, assign username metadata? and peer ID
-var peer, username, peerID
+var username, peerID
 
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 function makeID() {
@@ -49,13 +49,35 @@ function welcome(name, id) {
     $("#your-id").html(str)
 }
 
-function firstFunctions() {
-    getInfo();
-    peer = new Peer(peerID, {
+function makePeer(id) {
+    peer = new Peer(id, {
         debug: 2
     });
     console.log(peer);
-    welcome(username, peerID)
+    var delay = Promise.resolve()
+    .then(() => {
+        peer.on('call', (call) => {
+            $("#call-modal").hide(300);
+            alert('Incoming call!');
+            navigator.mediaDevices.getUserMedia({
+                audio: true, 
+                video: {facingMode: 'user'}
+            }).then((stream) => {
+                vid = document.getElementById("left-video");
+                vid.srcObject = stream;
+                vid.onloadedmetadata = (e) => {
+                    vid.play()
+                }
+                call.answer(stream);
+            })
+        })
+    })
+}
+
+function firstFunctions() {
+    getInfo();
+    makePeer(peerID);
+    welcome(username, peerID);
 }
 
 $("#username, #peer-id").on('keydown', (e) => {
@@ -67,7 +89,7 @@ $("#username, #peer-id").on('keydown', (e) => {
 
 //TODO: initiate a connection, start sending mediastream
 var call
-function initConn(id) {
+function initCall(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
         video: {facingMode: 'user'}
@@ -80,6 +102,13 @@ function initConn(id) {
         call = peer.call(id, stream, {
             metadata: { 'username': username }
         })
+        call.on('stream', (peerStream) => {
+            peerVid = document.getElementById("right-video");
+            peerVid.srcObject = peerStream;
+            peerVid.onloadedmetadata = (e) => {
+                peerVid.play()
+            }
+        })
     })
 }
 
@@ -87,8 +116,9 @@ function connectionFunctions() {
     $("#call-modal").hide(300)
     $("#video-container").show()
     var callerID = $("#call-id").val()
-    initConn(callerID)
+    initCall(callerID)
 }
+
 $("#call-id").on('keydown', (e) => {
     if (e.keyCode === 13) {
         connectionFunctions()
@@ -97,30 +127,7 @@ $("#call-id").on('keydown', (e) => {
 
 
 //TODO: receive a call
-peer.on('call', function(call) {
-    $("#call-modal").hide(300);
-    alert('Incoming call!')
-    navigator.mediaDevices.getUserMedia({
-        audio: true, 
-        video: {facingMode: 'user'}
-    }).then((stream) => {
-        vid = document.getElementById("left-video");
-        vid.srcObject = stream;
-        vid.onloadedmetadata = (e) => {
-            vid.play()
-        }
-        call.answer(stream);
-    })
-})
-
-//TODO: alert incoming call
 
 //TODO: stream peer stream in vid element
-call.on('stream', (peerStream) => {
-    peerVid = document.getElementById("right-video");
-    peerVid.srcObject = peerStream;
-    peerVid.onloadedmetadata = (e) => {
-        peerVid.play()
-    }
-})
-//TODO: Change the page layout accordingly to host two videostreams
+
+//TODO: Change the page layout accordingly to host two video streams
