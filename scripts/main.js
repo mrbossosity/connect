@@ -99,6 +99,8 @@ function makePeer(id) {
             $("#call-modal").hide(300);
             $("#main-modal").show(600);
             $("#username").focus();
+            try {peer.disconnect(); console.log('disconnected')} catch {};
+            try {peer.destroy(); console.log('destroyed')} catch{};
             alert(`Oops! Something went wrong. Try refreshing the page. ${err}`)
         })
     })
@@ -129,6 +131,17 @@ function initCall(id) {
             $("#right-video-username").html(peerName)
             $("#left-video-controls").show(300)
             $("#right-video-controls").show(300)
+        })
+        call.on('error', (err) => {
+            $("#banner").show();
+            $("#banner-orange").hide();
+            $("#video-container").hide(300);
+            $("#main-modal").show(600);
+            $("#username").focus();
+            try {call.close()} catch {};
+            try {peer.disconnect()} catch {};
+            try {peer.destroy()} catch{};
+            alert(`Oops! Something went wrong. Try refreshing the page. ${err}`)
         })
     })
 }
