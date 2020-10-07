@@ -51,6 +51,7 @@ function welcome(name, id) {
 
 function answerCall(call) {
     $("#call-modal").hide(300);
+    $("#video-container").show();
     console.log('call incoming!')
     navigator.mediaDevices.getUserMedia({
         audio: true, 
