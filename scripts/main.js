@@ -96,6 +96,7 @@ function makePeer(id) {
     })
 }
 
+var call
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
