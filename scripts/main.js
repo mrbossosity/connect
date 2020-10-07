@@ -50,6 +50,7 @@ function welcome(name, id) {
 }
 
 function answerCall(call) {
+    var peerName = call.metadata.username
     alert(`Incoming call from ${peerName}!`);
     $("#call-modal").hide(300);
     $("#video-container").show();
@@ -74,7 +75,6 @@ function answerCall(call) {
                 peerVid.play()
             }
             $("#left-video-username").html(username)
-            var peerName = call.metadata.username
             $("#right-video-username").html(peerName)
             $("#left-video-controls").show(300)
             $("#right-video-controls").show(300)
@@ -134,6 +134,8 @@ function firstFunctions() {
 
 function connectionFunctions() {
     $("#call-modal").hide(300)
+    $("#left-video-controls").hide()
+    $("#right-video-controls").hide()
     $("#video-container").show()
     var callerID = $("#call-id").val()
     initCall(callerID)
