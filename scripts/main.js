@@ -133,14 +133,15 @@ function initCall(id) {
             $("#right-video-controls").show(300)
         })
         call.on('error', (err) => {
-            $("#banner").show();
-            $("#banner-orange").hide();
-            $("#video-container").hide(300);
-            $("#main-modal").show(600);
-            $("#username").focus();
+            stream.getTracks().forEach(track => track.stop());
             try {call.close()} catch {};
             try {peer.disconnect()} catch {};
             try {peer.destroy()} catch{};
+            $("#banner").show();
+            $("#banner-orange").hide();
+            $("#video-container").hide();
+            $("#main-modal").show(600);
+            $("#username").focus();
             alert(`Oops! Something went wrong. Try refreshing the page. ${err}`)
         })
     })
