@@ -134,6 +134,18 @@ function initCall(id) {
         })
         call.on('error', (err) => {
             stream.getTracks().forEach(track => track.stop());
+            try {call.close(); console.log('call closed')} catch {};
+            try {peer.disconnect(); console.log('disconnected')} catch {};
+            try {peer.destroy(); console.log('destroyed')} catch{};
+            $("#banner").show();
+            $("#banner-orange").hide();
+            $("#video-container").hide();
+            $("#main-modal").show(600);
+            $("#username").focus();
+            alert(`Oops! Something went wrong. Try refreshing the page. ${err}`)
+        })
+        call.on('close', () => {
+            stream.getTracks().forEach(track => track.stop());
             try {call.close()} catch {};
             try {peer.disconnect()} catch {};
             try {peer.destroy()} catch{};
@@ -142,7 +154,7 @@ function initCall(id) {
             $("#video-container").hide();
             $("#main-modal").show(600);
             $("#username").focus();
-            alert(`Oops! Something went wrong. Try refreshing the page. ${err}`)
+            alert('Call ended')
         })
     })
 }
