@@ -1,5 +1,6 @@
-if(!window.location.hash) {
-    window.location = window.location + '#loaded';
-} else {
-    window.location.href = 'https://mrbossosity.github.io/connect'
-}
+if (window.location.hash !== '#load') {
+    window.location.hash = 'load';
+    window.location.href = window.location
+} 
+
+window.location.hash = '#landing';

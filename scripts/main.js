@@ -40,11 +40,11 @@ function getInfo() {
     username = $("#username").val()
     getID();
     console.log(`NAME: ${username}, ID: ${peerID}`);
-    $("#main-modal").hide(300);
-    $("#call-modal").show(600)
 }
 
 function welcome(name, id) {
+    $("#main-modal").hide(300);
+    $("#call-modal").show(600)
     str = `Welcome, ${name}! Your ID is <span style="font-size: 2.9vh; vertical-align: baseline">${id}</span>`
     $("#your-id").html(str)
 }
@@ -93,6 +93,14 @@ function makePeer(id) {
         peer.on('call', (call) => {
             answerCall(call)
         })
+        peer.on('error', (err) => {
+            $("#banner").show();
+            $("#banner-orange").hide();
+            $("#call-modal").hide(300);
+            $("#main-modal").show(600);
+            $("#username").focus();
+            alert(`Oops! Something went wrong. Try refreshing the page. ${err}`)
+        })
     })
 }
 
@@ -127,10 +135,14 @@ function initCall(id) {
 
 
 function firstFunctions() {
-    getInfo();
-    makePeer(peerID);
-    welcome(username, peerID);
-    $("#call-id").focus()
+    try {
+        getInfo();
+        makePeer(peerID);
+        welcome(username, peerID);
+        $("#call-id").focus()
+    } catch {
+        alert('Oops! Something went wrong. Try refreshing the page.')
+    }
 }
 
 function connectionFunctions() {
