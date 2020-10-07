@@ -50,6 +50,8 @@ function welcome(name, id) {
 }
 
 function answerCall(call) {
+    var peerName = call.metadata.username
+    alert(`Incoming call from ${peerName}!`);
     $("#call-modal").hide(300);
     $("#video-container").show();
     console.log('call incoming!')
@@ -63,7 +65,9 @@ function answerCall(call) {
             vid.play()
         }
         console.log('sending stream')
-        call.answer(stream);
+        call.answer(stream, {
+            metadata: { 'username': username }
+        });
         call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
             peerVid.srcObject = peerStream;
