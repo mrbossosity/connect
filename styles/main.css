@@ -16,13 +16,6 @@ body {
     align-items: center;
 }
 
-#bottom {
-    height: 7vh;
-    background-image: linear-gradient(to bottom, rgb(250,250,250), rgb(225,225,225), rgb(225,225,225), rgb(141,141,141));
-    background-repeat: no-repeat;
-    border-top: 0.28vw solid darkgray
-}
-
 #banner {
     width: 100%; height: auto;
     font-size: 2.35vw;
@@ -135,3 +128,40 @@ body {
     max-height: 100%;
 }
 
+#left-video-controls {
+    width: 49vw; height: 9vh;
+    position: fixed;
+    bottom: 7.3vh; 
+    display: flex;
+    justify-content: center;
+}
+
+#right-video-controls {
+    width: 49vw; height: 9vh;
+    position: fixed;
+    bottom: 7.3vh; 
+    display: flex;
+    justify-content: center;
+}
+
+#left-video-username, #right-video-username {
+    height: 6vh; width: auto;
+    padding: 0.1vh 2vw;
+    line-height: 6vh;
+    font-size: 3vh;
+    letter-spacing: 0.1vw;
+    text-align: center;
+    font-family: 'Nanum Gothic';
+    color: rgb(38,35,38);
+    background-color: rgb(251,251,251);
+    border: 0.1em solid dodgerblue; 
+    border-radius: 20em;
+    box-shadow: 0.035em 0.09em 0.1em gray;
+}
+
+#bottom {
+    height: 7vh;
+    background-image: linear-gradient(to bottom, rgb(250,250,250), rgb(225,225,225), rgb(225,225,225), rgb(141,141,141));
+    background-repeat: no-repeat;
+    border-top: 0.28vw solid darkgray
+}

@@ -13,7 +13,6 @@ $("#username").keydown(() => {
     showButton()
 })
 
-//TODO: Get text input, assign username metadata? and peer ID
 var username, peerID
 
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -49,11 +48,28 @@ function welcome(name, id) {
     $("#your-id").html(str)
 }
 
+function receiveStream(call) {
+    call.on('stream', (peerStream) => {
+        peerVid = document.getElementById("right-video");
+        peerVid.srcObject = peerStream;
+        peerVid.onloadedmetadata = (e) => {
+            peerVid.play()
+        }
+        $("#left-video-username").html(username)
+        var peerName = call.metadata.username
+        $("#right-video-username").html(peerName)
+        $("#left-video-controls").show(300)
+        $("#right-video-controls").show(300)
+    })
+}
+
 function answerCall(call) {
     var peerName = call.metadata.username
     alert(`Incoming call from ${peerName}!`);
     $("#call-modal").hide(300);
     $("#video-container").show();
+    $("#left-video-controls").hide()
+    $("#right-video-controls").hide()
     console.log('call incoming!')
     navigator.mediaDevices.getUserMedia({
         audio: true, 
@@ -68,13 +84,7 @@ function answerCall(call) {
         call.answer(stream, {
             metadata: { 'username': username }
         });
-        call.on('stream', (peerStream) => {
-            peerVid = document.getElementById("right-video");
-            peerVid.srcObject = peerStream;
-            peerVid.onloadedmetadata = (e) => {
-                peerVid.play()
-            }
-        })
+        receiveStream(call)
     })
 }
 
@@ -104,7 +114,6 @@ $("#username, #peer-id").on('keydown', (e) => {
 })
 
 
-//TODO: initiate a connection, start sending mediastream
 var call
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
@@ -119,13 +128,7 @@ function initCall(id) {
         call = peer.call(id, stream, {
             metadata: { 'username': username }
         })
-        call.on('stream', (peerStream) => {
-            peerVid = document.getElementById("right-video");
-            peerVid.srcObject = peerStream;
-            peerVid.onloadedmetadata = (e) => {
-                peerVid.play()
-            }
-        })
+        receiveStream(call)
     })
 }
 
@@ -141,10 +144,3 @@ $("#call-id").on('keydown', (e) => {
         connectionFunctions()
     }
 })
-
-
-//TODO: receive a call
-
-//TODO: stream peer stream in vid element
-
-//TODO: Change the page layout accordingly to host two video streams
