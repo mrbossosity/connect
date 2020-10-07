@@ -49,10 +49,6 @@ function welcome(name, id) {
     $("#your-id").html(str)
 }
 
-function receiveStream(call) {
-    
-}
-
 function answerCall(call) {
     alert(`Incoming call from ${peerName}!`);
     $("#call-modal").hide(300);
@@ -99,7 +95,7 @@ function makePeer(id) {
     })
 }
 
-var outgoingCall
+var call
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
@@ -110,17 +106,17 @@ function initCall(id) {
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
-        outgoingCall = peer.call(id, stream, {
+        call = peer.call(id, stream, {
             metadata: { 'username': username }
         })
-        outgoingCall.on('stream', (peerStream) => {
+        call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
             peerVid.srcObject = peerStream;
             peerVid.onloadedmetadata = (e) => {
                 peerVid.play()
             }
             $("#left-video-username").html(username)
-            var peerName = outgoingCall.metadata.username
+            var peerName = call.metadata.username
             $("#right-video-username").html(peerName)
             $("#left-video-controls").show(300)
             $("#right-video-controls").show(300)
