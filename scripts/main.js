@@ -190,9 +190,9 @@ function makePeer(id) {
             })
             $("#chat-input").on('keydown', (e) => {
                 if (e.keyCode === 13) {
-                    var msg = $(this).val();
+                    var msg = $("#chat-input").val();
                     conn.send(msg);
-                    this.val('')
+                    $("#chat-input").val('')
                 }
             })
         })
@@ -252,9 +252,9 @@ function initCall(id) {
         })
         $("#chat-input").on('keydown', (e) => {
             if (e.keyCode === 13) {
-                var msg = $(this).val();
+                var msg = $("#chat-input").val();
                 dataConnection.send(msg);
-                this.val('')
+                $("#chat-input").val('')
             }
         })
 
