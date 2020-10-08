@@ -1,19 +1,3 @@
-$("#banner-orange").hide()
-$("#call-modal").hide()
-$("#video-container").hide()
-$("#username").focus()
-var connectButton = 'hidden'
-function showButton() {
-    if (connectButton == 'hidden') {
-        $("#banner-orange").show();
-        connectButton = 'shown';
-        $("#banner").hide()
-    } 
-}
-$("#username").keydown(() => {
-    showButton()
-})
-
 var username, peerID
 
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -182,7 +166,6 @@ function initCall(id) {
         })
     })
 }
-
 
 function firstFunctions() {
     try {
