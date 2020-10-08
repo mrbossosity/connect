@@ -181,5 +181,11 @@ body {
     font-size: 3.5vh;
     text-align: center; line-height: 5vh;
     color: white; background-color: darkorange;
-    margin-right: 5vw;
+    margin-right: 3.25vw;
+}
+
+#chat-input {
+    width: 50vw; height: 5vh;
+    font-size: 3.5vh;
+    color: rgb(40,40,40); 
 }

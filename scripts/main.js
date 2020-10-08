@@ -187,13 +187,19 @@ function makePeer(id) {
                 conn.on('data', (data) => {
                     console.log('Received', data);
                 });
-                conn.send('Hello!');
+            })
+            $("#chat-input").on('keydown', (e) => {
+                if (e.keyCode === 13) {
+                    var msg = $(this).val();
+                    conn.send(msg);
+                    this.val('')
+                }
             })
         })
     })
 }
 
-var call, dataConnection
+var call
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
@@ -237,12 +243,19 @@ function initCall(id) {
         call = peer.call(id, stream, {
             metadata: { 'username': username }
         })
-        dataConnection = peer.connect(id)
+
+        var dataConnection = peer.connect(id)
         dataConnection.on('open', () => {
             dataConnection.on('data', (data) => {
                 console.log('Received', data);
             });
-            dataConnection.send('Hello!');
+        })
+        $("#chat-input").on('keydown', (e) => {
+            if (e.keyCode === 13) {
+                var msg = $(this).val();
+                dataConnection.send(msg);
+                this.val('')
+            }
         })
 
         window.location.hash = `call-with-${username}`;
