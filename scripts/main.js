@@ -181,10 +181,19 @@ function makePeer(id) {
             try {peer.destroy(); console.log('destroyed')} catch{};
             alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
         })
+        peer.on('connection', (conn) => {
+            console.log('Data connection established!');
+            conn.on('open', () => {
+                conn.on('data', (data) => {
+                    console.log('Received', data);
+                });
+                conn.send('Hello!');
+            })
+        })
     })
 }
 
-var call
+var call, dataConnection
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
@@ -228,7 +237,14 @@ function initCall(id) {
         call = peer.call(id, stream, {
             metadata: { 'username': username }
         })
-        
+        dataConnection = peer.connect(id)
+        dataConnection.on('open', () => {
+            dataConnection.on('data', (data) => {
+                console.log('Received', data);
+            });
+            dataConnection.send('Hello!');
+        })
+
         window.location.hash = `call-with-${username}`;
 
         call.on('stream', (peerStream) => {
