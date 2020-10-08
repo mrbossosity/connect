@@ -159,9 +159,27 @@ body {
     box-shadow: 0.035em 0.09em 0.1em gray;
 }
 
-#bottom {
-    height: 7vh;
+#av-buttons {
+    height: 7vh; width: 100vw;
     background-image: linear-gradient(to bottom, rgb(250,250,250), rgb(225,225,225), rgb(225,225,225), rgb(141,141,141));
     background-repeat: no-repeat;
-    border-top: 0.28vw solid darkgray
+    border-top: 0.28vw solid darkgray;
+    display: flex;
+    align-items: center;
+}
+
+#audio-control {
+    width: 5vh; height: 5vh;
+    font-size: 3.5vh;
+    text-align: center; line-height: 5vh;
+    color: white; background-color: dodgerblue;
+    margin-left: 3vw; margin-right: 3.25vw;
+}
+
+#video-control {
+    width: 5vh; height: 5vh;
+    font-size: 3.5vh;
+    text-align: center; line-height: 5vh;
+    color: white; background-color: darkorange;
+    margin-right: 5vw;
 }

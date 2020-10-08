@@ -33,6 +33,27 @@ function welcome(name, id) {
     $("#your-id").html(str)
 }
 
+var aEnabled = true, vEnabled = true;
+function disableAV(e, audioTracks, videoTracks) {
+    if (e.altKey && e.keyCode === 65) {
+        if (Boolean(aEnabled)) {
+            audioTracks.forEach(track => track.enabled = false)
+            aEnabled = false
+        } else {
+            audioTracks.forEach(track => track.enabled = true)
+            aEnabled = true
+        }
+    } else if (e.altKey && e.keyCode === 86) {
+        if (Boolean(vEnabled)) {
+            videoTracks.forEach(track => track.enabled = false)
+            vEnabled = false
+        } else {
+            videoTracks.forEach(track => track.enabled = true)
+            vEnabled = true
+        }
+    }
+}
+
 function answerCall(call) {
     var peerName = call.metadata.username
     alert(`Incoming call from ${peerName}!`);
@@ -49,31 +70,28 @@ function answerCall(call) {
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
-        
-        //mute/unmute and video on/off
+
         var audioTracks = stream.getAudioTracks();
         var videoTracks = stream.getVideoTracks();
-        var aEnabled = true, vEnabled = true;
         $(document).on('keydown', (e) => {
-            if (e.altKey && e.keyCode === 65) {
-                if (Boolean(aEnabled)) {
-                    audioTracks.forEach(track => track.enabled = false)
-                    aEnabled = false
-                } else {
-                    audioTracks.forEach(track => track.enabled = true)
-                    aEnabled = true
-                }
+            disableAV(e, audioTracks, videoTracks)
+        })
+        $("#audio-control").click(() => {
+            if (Boolean(aEnabled)) {
+                audioTracks.forEach(track => track.enabled = false)
+                aEnabled = false
+            } else {
+                audioTracks.forEach(track => track.enabled = true)
+                aEnabled = true
             }
         })
-        $(document).on('keydown', (e) => {
-            if (e.altKey && e.keyCode === 86) {
-                if (Boolean(vEnabled)) {
-                    videoTracks.forEach(track => track.enabled = false)
-                    vEnabled = false
-                } else {
-                    videoTracks.forEach(track => track.enabled = true)
-                    vEnabled = true
-                }
+        $("#video-control").click(() => {
+            if (Boolean(vEnabled)) {
+                videoTracks.forEach(track => track.enabled = false)
+                vEnabled = false
+            } else {
+                videoTracks.forEach(track => track.enabled = true)
+                vEnabled = true
             }
         })
 
@@ -91,6 +109,7 @@ function answerCall(call) {
             $("#right-video-username").html(peerName);
             $("#left-video-controls").show(300);
             $("#right-video-controls").show(300);
+            $("#av-buttons").show(300);
             $("#banner-orange").on('click', () => {
                 try {
                     call.close()
@@ -108,6 +127,7 @@ function answerCall(call) {
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
+            $("#av-buttons").hide();
             $("#main-modal").show(600);
             $("#username").focus();
             alert('Call ended!')
@@ -120,6 +140,7 @@ function answerCall(call) {
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
+            $("#av-buttons").hide();
             $("#main-modal").show(600);
             $("#username").focus();
             alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
@@ -162,30 +183,27 @@ function initCall(id) {
             vid.play()
         }
 
-        //mute/unmute and video on/off
         var audioTracks = stream.getAudioTracks();
         var videoTracks = stream.getVideoTracks();
-        var aEnabled = true, vEnabled = true;
         $(document).on('keydown', (e) => {
-            if (e.altKey && e.keyCode === 65) {
-                if (Boolean(aEnabled)) {
-                    audioTracks.forEach(track => track.enabled = false)
-                    aEnabled = false
-                } else {
-                    audioTracks.forEach(track => track.enabled = true)
-                    aEnabled = true
-                }
+            disableAV(e, audioTracks, videoTracks)
+        })
+        $("#audio-control").click(() => {
+            if (Boolean(aEnabled)) {
+                audioTracks.forEach(track => track.enabled = false)
+                aEnabled = false
+            } else {
+                audioTracks.forEach(track => track.enabled = true)
+                aEnabled = true
             }
         })
-        $(document).on('keydown', (e) => {
-            if (e.altKey && e.keyCode === 86) {
-                if (Boolean(vEnabled)) {
-                    videoTracks.forEach(track => track.enabled = false)
-                    vEnabled = false
-                } else {
-                    videoTracks.forEach(track => track.enabled = true)
-                    vEnabled = true
-                }
+        $("#video-control").click(() => {
+            if (Boolean(vEnabled)) {
+                videoTracks.forEach(track => track.enabled = false)
+                vEnabled = false
+            } else {
+                videoTracks.forEach(track => track.enabled = true)
+                vEnabled = true
             }
         })
 
@@ -204,6 +222,7 @@ function initCall(id) {
             $("#right-video-username").html(peerName);
             $("#left-video-controls").show(300);
             $("#right-video-controls").show(300);
+            $("#av-buttons").show(300);
             $("#banner-orange").on('click', () => {
                 try {
                     call.close()
@@ -222,6 +241,7 @@ function initCall(id) {
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
+            $("#av-buttons").hide();
             $("#main-modal").show(600);
             $("#username").focus();
             alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
@@ -233,6 +253,7 @@ function initCall(id) {
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
+            $("#av-buttons").hide();
             $("#main-modal").show(600);
             $("#username").focus();
             alert('Call ended!')
