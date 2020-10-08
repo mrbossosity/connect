@@ -59,10 +59,19 @@ function answerCall(call) {
             peerVid.onloadedmetadata = (e) => {
                 peerVid.play()
             }
-            $("#left-video-username").html(username)
-            $("#right-video-username").html(peerName)
-            $("#left-video-controls").show(300)
-            $("#right-video-controls").show(300)
+            $("#left-video-username").html(username);
+            $("#right-video-username").html(peerName);
+            $("#left-video-controls").show(300);
+            $("#right-video-controls").show(300);
+            $("#banner-orange").on('click', () => {
+                try {
+                    call.close()
+                } catch {
+                    console.log('error closing call')
+                }
+            }).prop('disabled', false)
+            $("#banner").hide();
+            $("#banner-orange").show();
         })
         call.on('close', () => {
             stream.getTracks().forEach(track => track.stop());
@@ -74,7 +83,7 @@ function answerCall(call) {
             $("#video-container").hide();
             $("#main-modal").show(600);
             $("#username").focus();
-            alert('Call ended')
+            alert(`Call with ${peerName} ended`)
         })
         call.on('error', (err) => {
             stream.getTracks().forEach(track => track.stop());
@@ -134,17 +143,26 @@ function initCall(id) {
             peerVid.onloadedmetadata = (e) => {
                 peerVid.play()
             }
-            $("#left-video-username").html(username)
-            var peerName = call.metadata.username
-            $("#right-video-username").html(peerName)
-            $("#left-video-controls").show(300)
-            $("#right-video-controls").show(300)
+            $("#left-video-username").html(username);
+            var peerName = call.metadata.username;
+            $("#right-video-username").html(peerName);
+            $("#left-video-controls").show(300);
+            $("#right-video-controls").show(300);
+            $("#banner-orange").on('click', () => {
+                try {
+                    call.close()
+                } catch {
+                    console.log('error closing call')
+                }
+            }).prop('disabled', false)
+            $("#banner").hide();
+            $("#banner-orange").show();
         })
         call.on('error', (err) => {
             stream.getTracks().forEach(track => track.stop());
             try {call.close(); console.log('call closed')} catch {};
-            try {peer.disconnect(); console.log('disconnected')} catch {};
-            try {peer.destroy(); console.log('destroyed')} catch{};
+            try {peer.disconnect(); console.log('peer disconnected')} catch {};
+            try {peer.destroy(); console.log('peer destroyed')} catch{};
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
@@ -154,15 +172,14 @@ function initCall(id) {
         })
         call.on('close', () => {
             stream.getTracks().forEach(track => track.stop());
-            try {call.close()} catch {};
-            try {peer.disconnect()} catch {};
-            try {peer.destroy()} catch{};
+            try {peer.disconnect(); console.log('peer disconnected')} catch {};
+            try {peer.destroy(); console.log('peer destroyed')} catch{};
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
             $("#main-modal").show(600);
             $("#username").focus();
-            alert('Call ended')
+            alert(`Call with ${peerName} ended`)
         })
     })
 }
@@ -174,7 +191,7 @@ function firstFunctions() {
         welcome(username, peerID);
         $("#call-id").focus()
     } catch {
-        alert('Oops! Something went wrong. Try refreshing the page.')
+        alert('Oops! Something went wrong.')
     }
 }
 
