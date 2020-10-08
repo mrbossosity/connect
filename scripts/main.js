@@ -104,6 +104,8 @@ function answerCall(call) {
             metadata: { 'username': username }
         });
 
+        window.location.hash = `call-from-${username}`
+
         call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
             peerVid.srcObject = peerStream;
@@ -129,6 +131,7 @@ function answerCall(call) {
             stream.getTracks().forEach(track => track.stop());
             try {peer.disconnect(); console.log('peer disconnected')} catch {};
             try {peer.destroy(); console.log('peer destroyed')} catch{};
+            window.location.hash = 'app';
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
@@ -142,6 +145,7 @@ function answerCall(call) {
             try {call.close(); console.log('call closed')} catch {};
             try {peer.disconnect(); console.log('peer disconnected')} catch {};
             try {peer.destroy(); console.log('peer destroyed')} catch{};
+            window.location.hash = 'app';
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
@@ -224,6 +228,8 @@ function initCall(id) {
         call = peer.call(id, stream, {
             metadata: { 'username': username }
         })
+        
+        window.location.hash = `call-with-${username}`;
 
         call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
@@ -252,6 +258,7 @@ function initCall(id) {
             try {call.close(); console.log('call closed')} catch {};
             try {peer.disconnect(); console.log('peer disconnected')} catch {};
             try {peer.destroy(); console.log('peer destroyed')} catch{};
+            window.location.hash = 'app';
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
@@ -264,6 +271,7 @@ function initCall(id) {
             stream.getTracks().forEach(track => track.stop());
             try {peer.disconnect(); console.log('peer disconnected')} catch {};
             try {peer.destroy(); console.log('peer destroyed')} catch{};
+            window.location.hash = 'app';
             $("#banner").show();
             $("#banner-orange").hide();
             $("#video-container").hide();
