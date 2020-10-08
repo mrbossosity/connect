@@ -36,7 +36,7 @@ function welcome(name, id) {
 var aEnabled = true, vEnabled = true;
 function disableAV(e, audioTracks, videoTracks) {
     if (e.altKey && e.keyCode === 65) {
-        if (Boolean(aEnabled)) {
+        if (aEnabled) {
             audioTracks.forEach(track => track.enabled = false)
             aEnabled = false
         } else {
@@ -44,7 +44,7 @@ function disableAV(e, audioTracks, videoTracks) {
             aEnabled = true
         }
     } else if (e.altKey && e.keyCode === 86) {
-        if (Boolean(vEnabled)) {
+        if (vEnabled) {
             videoTracks.forEach(track => track.enabled = false)
             vEnabled = false
         } else {
@@ -82,7 +82,7 @@ function answerCall(call) {
             disableAV(e, audioTracks, videoTracks)
         })
         $("#audio-control").click(() => {
-            if (Boolean(aEnabled)) {
+            if (aEnabled) {
                 audioTracks.forEach(track => track.enabled = false)
                 aEnabled = false
             } else {
@@ -91,7 +91,7 @@ function answerCall(call) {
             }
         })
         $("#video-control").click(() => {
-            if (Boolean(vEnabled)) {
+            if (vEnabled) {
                 videoTracks.forEach(track => track.enabled = false)
                 vEnabled = false
             } else {
@@ -199,7 +199,7 @@ function initCall(id) {
             disableAV(e, audioTracks, videoTracks)
         })
         $("#audio-control").click(() => {
-            if (Boolean(aEnabled)) {
+            if (aEnabled) {
                 audioTracks.forEach(track => track.enabled = false)
                 aEnabled = false
             } else {
@@ -208,7 +208,7 @@ function initCall(id) {
             }
         })
         $("#video-control").click(() => {
-            if (Boolean(vEnabled)) {
+            if (vEnabled) {
                 videoTracks.forEach(track => track.enabled = false)
                 vEnabled = false
             } else {
