@@ -156,8 +156,7 @@ function answerCall(call) {
 function makePeer(id) {
     peer = new Peer(id, {
         host: '9000-f2995c58-c800-4603-991d-74b8085b8525.ws-us02.gitpod.io',
-        secure: true,
-        port: 443,
+        port: 9000,
         path: '/',
         debug: 2
     });
