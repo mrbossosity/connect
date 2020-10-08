@@ -185,9 +185,11 @@ function makePeer(id) {
             console.log('Data connection established!');
             conn.on('open', () => {
                 conn.on('data', (data) => {
+                    alert(data);
                     console.log('Received', data);
                 });
             })
+            conn.send(`USERNAME:${username}`)
             $("#chat-input").on('keydown', (e) => {
                 if (e.keyCode === 13) {
                     var msg = $("#chat-input").val();
@@ -245,8 +247,13 @@ function initCall(id) {
         })
 
         var dataConnection = peer.connect(id)
+        var peerName
         dataConnection.on('open', () => {
             dataConnection.on('data', (data) => {
+                if ((/USERNAME/).test(data)) {
+                    peerName = data.substr(9)
+                }
+                alert(data);
                 console.log('Received', data);
             });
         })
@@ -267,7 +274,6 @@ function initCall(id) {
                 peerVid.play()
             }
             $("#left-video-username").html(username);
-            var peerName = call.metadata.username;
             $("#right-video-username").html(peerName);
             $("#left-video-controls").show(300);
             $("#right-video-controls").show(300);

@@ -3,7 +3,7 @@ if (window.location.hash !== '#load') {
     window.location.href = window.location
 } 
 
-window.location.hash = 'vid-chat-app';
+window.location.hash = 'app';
 
 window.addEventListener('beforeunload', function(e) {
     try {
