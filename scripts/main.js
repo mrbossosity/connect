@@ -63,7 +63,11 @@ function answerCall(call) {
     $("#right-video-controls").hide()
     navigator.mediaDevices.getUserMedia({
         audio: true, 
-        video: {facingMode: 'user'}
+        video: {
+            width: 720,
+            height: 480,
+            facingMode: 'user'
+        }
     }).then((stream) => {
         vid = document.getElementById("left-video");
         vid.srcObject = stream;
@@ -175,7 +179,11 @@ var call
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
-        video: {facingMode: 'user'}
+        video: {
+            width: 720,
+            height: 480,
+            facingMode: 'user'
+        }
     }).then((stream) => {
         vid = document.getElementById("left-video");
         vid.srcObject = stream;
