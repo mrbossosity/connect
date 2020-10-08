@@ -44,15 +44,43 @@ function answerCall(call) {
         audio: true, 
         video: {facingMode: 'user'}
     }).then((stream) => {
-        call.answer(stream, {
-            metadata: { 'username': username }
-        });
-
         vid = document.getElementById("left-video");
         vid.srcObject = stream;
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
+        
+        //mute/unmute and video on/off
+        var audioTracks = stream.getAudioTracks();
+        var videoTracks = stream.getVideoTracks();
+        var aEnabled = true, vEnabled = true;
+        $(document).on('keydown', (e) => {
+            if (e.altKey && e.keyCode === 65) {
+                if (Boolean(aEnabled)) {
+                    audioTracks.forEach(track => track.enabled = false)
+                    aEnabled = false
+                } else {
+                    audioTracks.forEach(track => track.enabled = true)
+                    aEnabled = true
+                }
+            }
+        })
+        $(document).on('keydown', (e) => {
+            if (e.altKey && e.keyCode === 86) {
+                if (Boolean(vEnabled)) {
+                    videoTracks.forEach(track => track.enabled = false)
+                    vEnabled = false
+                } else {
+                    videoTracks.forEach(track => track.enabled = true)
+                    vEnabled = true
+                }
+            }
+        })
+
+        call.answer(stream, {
+            metadata: { 'username': username }
+        });
+
         call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
             peerVid.srcObject = peerStream;
@@ -133,9 +161,38 @@ function initCall(id) {
         vid.onloadedmetadata = (e) => {
             vid.play()
         }
+
+        //mute/unmute and video on/off
+        var audioTracks = stream.getAudioTracks();
+        var videoTracks = stream.getVideoTracks();
+        var aEnabled = true, vEnabled = true;
+        $(document).on('keydown', (e) => {
+            if (e.altKey && e.keyCode === 65) {
+                if (Boolean(aEnabled)) {
+                    audioTracks.forEach(track => track.enabled = false)
+                    aEnabled = false
+                } else {
+                    audioTracks.forEach(track => track.enabled = true)
+                    aEnabled = true
+                }
+            }
+        })
+        $(document).on('keydown', (e) => {
+            if (e.altKey && e.keyCode === 86) {
+                if (Boolean(vEnabled)) {
+                    videoTracks.forEach(track => track.enabled = false)
+                    vEnabled = false
+                } else {
+                    videoTracks.forEach(track => track.enabled = true)
+                    vEnabled = true
+                }
+            }
+        })
+
         call = peer.call(id, stream, {
             metadata: { 'username': username }
         })
+
         call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
             peerVid.srcObject = peerStream;
