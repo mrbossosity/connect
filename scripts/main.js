@@ -155,7 +155,11 @@ function answerCall(call) {
 
 function makePeer(id) {
     peer = new Peer(id, {
-        debug: 2
+        debug: 2,
+        host: "0.peerjs.com",
+        key: "peerjs",
+        path: "/",
+        port: 443
     });
     console.log(peer);
     var delay = Promise.resolve()
