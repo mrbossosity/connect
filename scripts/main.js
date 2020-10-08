@@ -132,6 +132,7 @@ function answerCall(call) {
             $("#banner-orange").hide();
             $("#video-container").hide();
             $("#av-buttons").hide();
+            aEnabled = true; vEnabled = true;
             $("#main-modal").show(600);
             $("#username").focus();
             alert('Call ended!')
@@ -145,6 +146,7 @@ function answerCall(call) {
             $("#banner-orange").hide();
             $("#video-container").hide();
             $("#av-buttons").hide();
+            aEnabled = true; vEnabled = true;
             $("#main-modal").show(600);
             $("#username").focus();
             alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
@@ -250,6 +252,7 @@ function initCall(id) {
             $("#banner-orange").hide();
             $("#video-container").hide();
             $("#av-buttons").hide();
+            aEnabled = true; vEnabled = true;
             $("#main-modal").show(600);
             $("#username").focus();
             alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
@@ -262,6 +265,7 @@ function initCall(id) {
             $("#banner-orange").hide();
             $("#video-container").hide();
             $("#av-buttons").hide();
+            aEnabled = true; vEnabled = true;
             $("#main-modal").show(600);
             $("#username").focus();
             alert('Call ended!')
