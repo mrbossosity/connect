@@ -100,9 +100,7 @@ function answerCall(call) {
             }
         })
 
-        call.answer(stream, {
-            metadata: { 'username': username }
-        });
+        call.answer(stream);
 
         window.location.hash = `call-from-${username}`
 
@@ -202,12 +200,16 @@ function initCall(id) {
             metadata: { 'username': username }
         })
 
-        var dataConnection = peer.connect(id)
+        var dataConnection = peer.connect(id, {
+            metadata: { 'username': username }
+        })
+
         var reg = /USERNAME/
+        var peerName
         dataConnection.on('open', () => {
             dataConnection.on('data', (data) => {
                 if (reg.test(data)) {
-                    var peerName = data.substr(9);
+                    peerName = data.substr(9);
                     window.location.hash = `call-with-${peerName}`;
                     $("#right-video-username").html(peerName);
                 } else {
@@ -302,8 +304,9 @@ function makePeer(id) {
             console.log('Data connection established!');
             conn.on('open', () => {
                 conn.send(`USERNAME:${username}`)
+                var peerName = conn.metadata.username
                 conn.on('data', (data) => {
-                    alert(data);
+                    alert(`${peerName}: ${data}`);
                 });
             })
             $("#chat-input").on('keydown', (e) => {
