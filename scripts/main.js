@@ -301,11 +301,11 @@ function makePeer(id) {
         peer.on('connection', (conn) => {
             console.log('Data connection established!');
             conn.on('open', () => {
+                conn.send(`USERNAME:${username}`)
                 conn.on('data', (data) => {
                     alert(data);
                 });
             })
-            conn.send(`USERNAME:${username}`)
             $("#chat-input").on('keydown', (e) => {
                 if (e.keyCode === 13) {
                     var msg = $("#chat-input").val();
