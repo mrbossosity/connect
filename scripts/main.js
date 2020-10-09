@@ -203,15 +203,17 @@ function initCall(id) {
         })
 
         var dataConnection = peer.connect(id)
-        var peerName
+        var reg = /USERNAME/
         dataConnection.on('open', () => {
-            var reg = /USERNAME/
             dataConnection.on('data', (data) => {
-                if (reg.test(data.toString())) {
-                    peerName = data.toString().substr(9)
+                if (reg.test(data)) {
+                    var peerName = data.substr(9);
+                    window.location.hash = `call-with-${peerName}`;
+                    $("#right-video-username").html(peerName);
+                } else {
+                    alert(`${peerName}: ${data}`);
+                    console.log('Received', data);
                 }
-                alert(`${peerName}: data`);
-                console.log('Received', data);
             });
         })
         $("#chat-input").on('keydown', (e) => {
@@ -222,8 +224,6 @@ function initCall(id) {
             }
         })
 
-        window.location.hash = `call-with-${peerName}`;
-
         call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
             peerVid.srcObject = peerStream;
@@ -231,7 +231,6 @@ function initCall(id) {
                 peerVid.play()
             }
             $("#left-video-username").html(username);
-            $("#right-video-username").html(peerName);
             $("#left-video-controls").show(300);
             $("#right-video-controls").show(300);
             $("#av-buttons").show(300);
