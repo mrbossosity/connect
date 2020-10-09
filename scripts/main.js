@@ -157,50 +157,6 @@ function answerCall(call) {
     })
 }
 
-function makePeer(id) {
-    peer = new Peer(id, {
-        debug: 2,
-        host: "0.peerjs.com",
-        key: "peerjs",
-        path: "/",
-        port: 443
-    });
-    console.log(peer);
-    var delay = Promise.resolve()
-    .then(() => {
-        peer.on('call', (call) => {
-            answerCall(call)
-        })
-        peer.on('error', (err) => {
-            $("#banner").show();
-            $("#banner-orange").hide();
-            $("#call-modal").hide(300);
-            $("#main-modal").show(600);
-            $("#username").focus();
-            try {peer.disconnect(); console.log('disconnected')} catch {};
-            try {peer.destroy(); console.log('destroyed')} catch{};
-            alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
-        })
-        peer.on('connection', (conn) => {
-            console.log('Data connection established!');
-            conn.on('open', () => {
-                conn.on('data', (data) => {
-                    alert(data);
-                    console.log('Received', data);
-                });
-            })
-            conn.send(`USERNAME:${username}`)
-            $("#chat-input").on('keydown', (e) => {
-                if (e.keyCode === 13) {
-                    var msg = $("#chat-input").val();
-                    conn.send(msg);
-                    $("#chat-input").val('')
-                }
-            })
-        })
-    })
-}
-
 var call
 function initCall(id) {
     navigator.mediaDevices.getUserMedia({
@@ -249,11 +205,12 @@ function initCall(id) {
         var dataConnection = peer.connect(id)
         var peerName
         dataConnection.on('open', () => {
+            var reg = /USERNAME/
             dataConnection.on('data', (data) => {
-                if ((/USERNAME/).test(data)) {
-                    peerName = data.substr(9)
+                if (reg.test(data.toString())) {
+                    peerName = data.toString().substr(9)
                 }
-                alert(data);
+                alert(`${peerName}: data`);
                 console.log('Received', data);
             });
         })
@@ -265,7 +222,7 @@ function initCall(id) {
             }
         })
 
-        window.location.hash = `call-with-${username}`;
+        window.location.hash = `call-with-${peerName}`;
 
         call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
@@ -314,6 +271,49 @@ function initCall(id) {
             $("#main-modal").show(600);
             $("#username").focus();
             alert('Call ended!')
+        })
+    })
+}
+
+function makePeer(id) {
+    peer = new Peer(id, {
+        debug: 2,
+        host: "0.peerjs.com",
+        key: "peerjs",
+        path: "/",
+        port: 443
+    });
+    console.log(peer);
+    var delay = Promise.resolve()
+    .then(() => {
+        peer.on('call', (call) => {
+            answerCall(call)
+        })
+        peer.on('error', (err) => {
+            $("#banner").show();
+            $("#banner-orange").hide();
+            $("#call-modal").hide(300);
+            $("#main-modal").show(600);
+            $("#username").focus();
+            try {peer.disconnect(); console.log('disconnected')} catch {};
+            try {peer.destroy(); console.log('destroyed')} catch{};
+            alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
+        })
+        peer.on('connection', (conn) => {
+            console.log('Data connection established!');
+            conn.on('open', () => {
+                conn.on('data', (data) => {
+                    alert(data);
+                });
+            })
+            conn.send(`USERNAME:${username}`)
+            $("#chat-input").on('keydown', (e) => {
+                if (e.keyCode === 13) {
+                    var msg = $("#chat-input").val();
+                    conn.send(msg);
+                    $("#chat-input").val('')
+                }
+            })
         })
     })
 }
