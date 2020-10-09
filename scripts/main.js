@@ -2,11 +2,10 @@ var username, peerID
 
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 function makeID() {
-    var id = ''
-    var x = 0
+    var id = '', x = 0;
     while (x < 6) { 
-        let digit = digits[Math.floor(Math.random() * digits.length)]
-        id += digit
+        let digit = digits[Math.floor(Math.random() * digits.length)];
+        id += digit;
         x ++
     }
     return id
@@ -21,15 +20,19 @@ function getID() {
 }
 
 function getInfo() {
-    username = $("#username").val()
+    if ($("#username").val() !== '') {
+        username = $("#username").val()
+    } else {
+        username = 'Anonymous User'
+    }
     getID();
     console.log(`NAME: ${username}, ID: ${peerID}`);
 }
 
 function welcome(name, id) {
     $("#main-modal").hide(300);
-    $("#call-modal").show(600)
-    str = `Welcome, ${name}! Your ID is <span style="font-size: 2.9vh; vertical-align: baseline">${id}</span>`
+    $("#call-modal").show(600);
+    str = `Welcome, ${name}! Your ID is <span style="font-size: 2.9vh; vertical-align: baseline">${id}</span>`;
     $("#your-id").html(str)
 }
 
@@ -37,30 +40,30 @@ var aEnabled = true, vEnabled = true;
 function disableAV(e, audioTracks, videoTracks) {
     if (e.altKey && e.keyCode === 65) {
         if (aEnabled) {
-            audioTracks.forEach(track => track.enabled = false)
+            audioTracks.forEach(track => track.enabled = false);
             aEnabled = false
         } else {
-            audioTracks.forEach(track => track.enabled = true)
+            audioTracks.forEach(track => track.enabled = true);
             aEnabled = true
         }
     } else if (e.altKey && e.keyCode === 86) {
         if (vEnabled) {
-            videoTracks.forEach(track => track.enabled = false)
+            videoTracks.forEach(track => track.enabled = false);
             vEnabled = false
         } else {
-            videoTracks.forEach(track => track.enabled = true)
+            videoTracks.forEach(track => track.enabled = true);
             vEnabled = true
         }
     }
 }
 
 function answerCall(call) {
-    var peerName = call.metadata.username
+    var peerName = call.metadata.username;
     alert(`Incoming call from ${peerName}!`);
     $("#call-modal").hide(300);
     $("#video-container").show();
-    $("#left-video-controls").hide()
-    $("#right-video-controls").hide()
+    $("#left-video-controls").hide();
+    $("#right-video-controls").hide();
     navigator.mediaDevices.getUserMedia({
         audio: true, 
         video: {
@@ -83,19 +86,19 @@ function answerCall(call) {
         })
         $("#audio-control").click(() => {
             if (aEnabled) {
-                audioTracks.forEach(track => track.enabled = false)
+                audioTracks.forEach(track => track.enabled = false);
                 aEnabled = false
             } else {
-                audioTracks.forEach(track => track.enabled = true)
+                audioTracks.forEach(track => track.enabled = true);
                 aEnabled = true
             }
         })
         $("#video-control").click(() => {
             if (vEnabled) {
-                videoTracks.forEach(track => track.enabled = false)
+                videoTracks.forEach(track => track.enabled = false);
                 vEnabled = false
             } else {
-                videoTracks.forEach(track => track.enabled = true)
+                videoTracks.forEach(track => track.enabled = true);
                 vEnabled = true
             }
         })
@@ -119,7 +122,7 @@ function answerCall(call) {
                 } catch {
                     console.log('error closing call')
                 }
-            }).prop('disabled', false)
+            }).prop('disabled', false);
             $("#banner").hide();
             $("#banner-orange").show();
         })
@@ -127,13 +130,6 @@ function answerCall(call) {
             stream.getTracks().forEach(track => track.stop());
             try {peer.disconnect(); console.log('peer disconnected')} catch {};
             try {peer.destroy(); console.log('peer destroyed')} catch{};
-            window.location.hash = 'app';
-            $("#banner").show();
-            $("#banner-orange").hide();
-            $("#video-container").hide();
-            $("#av-buttons").hide();
-            $("#main-modal").show(600);
-            $("#username").focus();
             alert('Call ended!');
             window.location.reload(true)
         })
@@ -142,13 +138,6 @@ function answerCall(call) {
             try {call.close(); console.log('call closed')} catch {};
             try {peer.disconnect(); console.log('peer disconnected')} catch {};
             try {peer.destroy(); console.log('peer destroyed')} catch{};
-            window.location.hash = 'app';
-            $("#banner").show();
-            $("#banner-orange").hide();
-            $("#video-container").hide();
-            $("#av-buttons").hide();
-            $("#main-modal").show(600);
-            $("#username").focus();
             alert(`Oops! Call broke. ${err}`);
             window.location.reload(true)
         })
@@ -179,19 +168,19 @@ function initCall(id) {
         })
         $("#audio-control").click(() => {
             if (aEnabled) {
-                audioTracks.forEach(track => track.enabled = false)
+                audioTracks.forEach(track => track.enabled = false);
                 aEnabled = false
             } else {
-                audioTracks.forEach(track => track.enabled = true)
+                audioTracks.forEach(track => track.enabled = true);
                 aEnabled = true
             }
         })
         $("#video-control").click(() => {
             if (vEnabled) {
-                videoTracks.forEach(track => track.enabled = false)
+                videoTracks.forEach(track => track.enabled = false);
                 vEnabled = false
             } else {
-                videoTracks.forEach(track => track.enabled = true)
+                videoTracks.forEach(track => track.enabled = true);
                 vEnabled = true
             }
         })
@@ -204,8 +193,8 @@ function initCall(id) {
             metadata: { 'username': username }
         })
 
-        var reg = /USERNAME/
-        var peerName
+        var reg = /USERNAME/;
+        var peerName;
         dataConnection.on('open', () => {
             dataConnection.on('data', (data) => {
                 if (reg.test(data)) {
@@ -214,7 +203,7 @@ function initCall(id) {
                     $("#right-video-username").html(peerName);
                 } else {
                     alert(`${peerName}: ${data}`);
-                    console.log('Received', data);
+                    console.log('Received', data)
                 }
             });
         })
@@ -242,7 +231,7 @@ function initCall(id) {
                 } catch {
                     console.log('error closing call')
                 }
-            }).prop('disabled', false)
+            }).prop('disabled', false);
             $("#banner").hide();
             $("#banner-orange").show();
         })
@@ -251,13 +240,6 @@ function initCall(id) {
             try {call.close(); console.log('call closed')} catch {};
             try {peer.disconnect(); console.log('peer disconnected')} catch {};
             try {peer.destroy(); console.log('peer destroyed')} catch{};
-            window.location.hash = 'app';
-            $("#banner").show();
-            $("#banner-orange").hide();
-            $("#video-container").hide();
-            $("#av-buttons").hide();
-            $("#main-modal").show(600);
-            $("#username").focus();
             alert(`Oops! Call broke. ${err}`);
             window.location.reload(true)
         })
@@ -265,13 +247,6 @@ function initCall(id) {
             stream.getTracks().forEach(track => track.stop());
             try {peer.disconnect(); console.log('peer disconnected')} catch {};
             try {peer.destroy(); console.log('peer destroyed')} catch{};
-            window.location.hash = 'app';
-            $("#banner").show();
-            $("#banner-orange").hide();
-            $("#video-container").hide();
-            $("#av-buttons").hide();
-            $("#main-modal").show(600);
-            $("#username").focus();
             alert('Call ended!');
             window.location.reload(true)
         })
@@ -304,9 +279,9 @@ function makePeer(id) {
         })
         peer.on('connection', (conn) => {
             conn.on('open', () => {
-                conn.send(`USERNAME:${username}`)
+                conn.send(`USERNAME:${username}`);
                 var peerName = conn.metadata.username;
-                window.location.hash = `call-from-${peerName}`
+                window.location.hash = `call-from-${peerName}`;
                 conn.on('data', (data) => {
                     alert(`${peerName}: ${data}`);
                 });
@@ -334,11 +309,11 @@ function firstFunctions() {
 }
 
 function connectionFunctions() {
-    $("#call-modal").hide(300)
-    $("#left-video-controls").hide()
-    $("#right-video-controls").hide()
-    $("#video-container").show()
-    var callerID = $("#call-id").val()
+    $("#call-modal").hide(300);
+    $("#left-video-controls").hide();
+    $("#right-video-controls").hide();
+    $("#video-container").show();
+    var callerID = $("#call-id").val();
     initCall(callerID)
 }
 
