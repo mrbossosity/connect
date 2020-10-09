@@ -173,7 +173,7 @@ body {
     font-size: 2.75vh;
     text-align: center; line-height: 4vh;
     color: white; background-color: dodgerblue;
-    margin-left: 3vw; margin-right: 3.25vw;
+    margin-left: 1.9vw; margin-right: 2.9vw;
     border: 0.28vw solid darkgray;
     border-radius: 0.5vw;
 }
@@ -183,7 +183,7 @@ body {
     font-size: 2.75vh;
     text-align: center; line-height: 4vh;
     color: white; background-color: darkorange;
-    margin-right: 3.25vw;
+    margin-right: 2vw;
     border: 0.28vw solid darkgray;
     border-radius: 0.5vw;
 }
