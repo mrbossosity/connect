@@ -136,7 +136,8 @@ function answerCall(call) {
             $("#av-buttons").hide();
             $("#main-modal").show(600);
             $("#username").focus();
-            alert('Call ended!')
+            alert('Call ended!');
+            window.location.href = window.location
         })
         call.on('error', (err) => {
             stream.getTracks().forEach(track => track.stop());
@@ -150,7 +151,8 @@ function answerCall(call) {
             $("#av-buttons").hide();
             $("#main-modal").show(600);
             $("#username").focus();
-            alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
+            alert(`Oops! Call broke. ${err}`);
+            window.location.href = window.location
         })
     })
 }
@@ -258,7 +260,8 @@ function initCall(id) {
             $("#av-buttons").hide();
             $("#main-modal").show(600);
             $("#username").focus();
-            alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
+            alert(`Oops! Call broke. ${err}`);
+            window.location.href = window.location
         })
         call.on('close', () => {
             stream.getTracks().forEach(track => track.stop());
@@ -271,7 +274,8 @@ function initCall(id) {
             $("#av-buttons").hide();
             $("#main-modal").show(600);
             $("#username").focus();
-            alert('Call ended!')
+            alert('Call ended!');
+            window.location.href = window.location
         })
     })
 }

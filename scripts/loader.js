@@ -3,7 +3,7 @@ if (window.location.hash !== '#load') {
     window.location.href = window.location
 } 
 
-window.location.hash = '#app';
+window.location.hash = '#app-2';
 
 window.addEventListener('beforeunload', function(e) {
     try {
