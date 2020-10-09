@@ -262,11 +262,10 @@ function initCall(id) {
 
 function makePeer(id) {
     peer = new Peer(id, {
-        debug: 2,
-        host: "0.peerjs.com",
-        key: "peerjs",
-        path: "/",
-        port: 443
+        secure: true,
+        host: "connect-peer-server.herokuapp.com",
+        port: 443,
+        debug: 2
     });
     console.log(peer);
     var delay = Promise.resolve()
