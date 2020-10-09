@@ -102,8 +102,6 @@ function answerCall(call) {
 
         call.answer(stream);
 
-        window.location.hash = `call-from-${username}`
-
         call.on('stream', (peerStream) => {
             peerVid = document.getElementById("right-video");
             peerVid.srcObject = peerStream;
@@ -137,7 +135,7 @@ function answerCall(call) {
             $("#main-modal").show(600);
             $("#username").focus();
             alert('Call ended!');
-            window.location.href = window.location
+            window.location.reload(true)
         })
         call.on('error', (err) => {
             stream.getTracks().forEach(track => track.stop());
@@ -152,7 +150,7 @@ function answerCall(call) {
             $("#main-modal").show(600);
             $("#username").focus();
             alert(`Oops! Call broke. ${err}`);
-            window.location.href = window.location
+            window.location.reload(true)
         })
     })
 }
@@ -261,7 +259,7 @@ function initCall(id) {
             $("#main-modal").show(600);
             $("#username").focus();
             alert(`Oops! Call broke. ${err}`);
-            window.location.href = window.location
+            window.location.reload(true)
         })
         call.on('close', () => {
             stream.getTracks().forEach(track => track.stop());
@@ -275,7 +273,7 @@ function initCall(id) {
             $("#main-modal").show(600);
             $("#username").focus();
             alert('Call ended!');
-            window.location.href = window.location
+            window.location.reload(true)
         })
     })
 }
@@ -305,10 +303,10 @@ function makePeer(id) {
             alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
         })
         peer.on('connection', (conn) => {
-            console.log('Data connection established!');
             conn.on('open', () => {
                 conn.send(`USERNAME:${username}`)
-                var peerName = conn.metadata.username
+                var peerName = conn.metadata.username;
+                window.location.hash = `call-from-${peerName}`
                 conn.on('data', (data) => {
                     alert(`${peerName}: ${data}`);
                 });
