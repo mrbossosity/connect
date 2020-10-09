@@ -173,7 +173,7 @@ body {
     font-size: 2.75vh;
     text-align: center; line-height: 4vh;
     color: white; background-color: dodgerblue;
-    margin-left: 1.9vw; margin-right: 2.9vw;
+    margin-left: 2vw; margin-right: 3vw;
     border: 0.28vw solid darkgray;
     border-radius: 0.5vw;
 }
@@ -183,9 +183,15 @@ body {
     font-size: 2.75vh;
     text-align: center; line-height: 4vh;
     color: white; background-color: darkorange;
-    margin-right: 2vw;
+    margin-right: 3vw;
     border: 0.28vw solid darkgray;
     border-radius: 0.5vw;
+}
+
+#chat-input {
+    font-size: 3.5vh;
+    color: rgb(40,40,40); 
+    margin-right: 1.5vw
 }
 
 #chat-control {
@@ -196,13 +202,6 @@ body {
     color: rgb(28,28,28);
     border: 0.28vw solid dodgerblue;
     border-radius: 0.5vw;
-    margin-right: 3.25vw;
-}
-
-#chat-input {
-    font-size: 3.5vh;
-    color: rgb(40,40,40); 
-    margin-right: 3.25vw
 }
 
 #chat-modal {
