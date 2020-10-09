@@ -202,15 +202,22 @@ function initCall(id) {
                     window.location.hash = `call-with-${peerName}`;
                     $("#right-video-username").html(peerName);
                 } else {
-                    alert(`${peerName}: ${data}`);
-                    console.log('Received', data)
+                    var msg = `<p class="in-chat-message">${peerName}: ${data}</p>`
+                    $("#chat-modal").append(msg);
+                    if ($("#chat-modal").is(":hidden")) {
+                        $("#chat-modal").show(200);
+                    }
+                    $("#chat-modal").scrollTop(1E8);
                 }
             });
         })
         $("#chat-input").on('keydown', (e) => {
             if (e.keyCode === 13) {
-                var msg = $("#chat-input").val();
-                dataConnection.send(msg);
+                var text = $("#chat-input").val();
+                var msg = `<p class="out-chat-message">Me: ${text}</p>`;
+                dataConnection.send(text);
+                $("#chat-modal").append(msg);
+                $("#chat-modal").scrollTop(1E8);
                 $("#chat-input").val('')
             }
         })
@@ -283,13 +290,21 @@ function makePeer(id) {
                 var peerName = conn.metadata.username;
                 window.location.hash = `call-from-${peerName}`;
                 conn.on('data', (data) => {
-                    alert(`${peerName}: ${data}`);
+                    var msg = `<p class="in-chat-message">${peerName}: ${data}</p>`
+                    $("#chat-modal").append(msg);
+                    if ($("#chat-modal").is(":hidden")) {
+                        $("#chat-modal").show(200);
+                    }
+                    $("#chat-modal").scrollTop(1E8);
                 });
             })
             $("#chat-input").on('keydown', (e) => {
                 if (e.keyCode === 13) {
-                    var msg = $("#chat-input").val();
-                    conn.send(msg);
+                    var text = $("#chat-input").val();
+                    var msg = `<p class="out-chat-message">Me: ${text}</p>`;
+                    conn.send(text);
+                    $("#chat-modal").append(msg);
+                    $("#chat-modal").scrollTop(1E8);
                     $("#chat-input").val('')
                 }
             })
@@ -327,4 +342,17 @@ $("#call-id").on('keydown', (e) => {
     if (e.keyCode === 13) {
         connectionFunctions()
     }
+})
+
+$("#chat-control").click(() => {
+    if ($("#chat-modal").is(":visible")) {
+        $("#chat-modal").hide(200);
+    } else {
+        $("#chat-modal").show(200);
+        $("#chat-modal").scrollTop(1E8);
+    }
+})
+
+$("#close-chat-modal").click(() => {
+    $("#chat-modal").hide(300)
 })
