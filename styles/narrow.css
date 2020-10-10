@@ -202,8 +202,8 @@ body {
 
 #chat-modal {
     position: absolute;
-    top: 29vh; left: 33.5vw;
-    width: 30vw; height: 45vh;
+    top: 29vh; left: 15.5vw;
+    width: 65vw; height: 45vh;
     background-color: rgb(251,251,251);
     border: 0.28vw solid darkgray;
     border-radius: 2.75vw;
@@ -211,6 +211,10 @@ body {
     padding: 0.5vh 2.7vw;
     overflow-wrap: break-word;
     overflow-y: scroll;
+}
+
+#chat-title {
+    width: 61vw; height: 4vh;
 }
 
 #close-chat-modal {

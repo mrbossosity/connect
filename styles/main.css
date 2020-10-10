@@ -223,6 +223,10 @@ body {
     overflow-y: scroll;
 }
 
+#chat-title {
+    width: 27vw; height: 4vh;
+}
+
 #close-chat-modal {
     display: hidden
 }
