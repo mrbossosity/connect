@@ -274,14 +274,22 @@ function makePeer(id) {
             answerCall(call)
         })
         peer.on('error', (err) => {
-            $("#banner").show();
-            $("#banner-orange").hide();
-            $("#call-modal").hide(300);
-            $("#main-modal").show(600);
-            $("#username").focus();
-            try {peer.disconnect(); console.log('disconnected')} catch {};
-            try {peer.destroy(); console.log('destroyed')} catch{};
-            alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
+            var reg = /Could not connect to peer/;
+            if ((reg).test(err)) {
+                try {peer.disconnect(); console.log('peer disconnected')} catch {};
+                try {peer.destroy(); console.log('peer destroyed')} catch{};
+                alert(`Oops! ${err}`);
+                window.location.reload(true)
+            } else {
+                $("#banner").show();
+                $("#banner-orange").hide();
+                $("#call-modal").hide(300);
+                $("#main-modal").show(600);
+                $("#username").focus();
+                try {peer.disconnect(); console.log('peer disconnected')} catch {};
+                try {peer.destroy(); console.log('peer destroyed')} catch{};
+                alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
+            }
         })
         peer.on('connection', (conn) => {
             conn.on('open', () => {
