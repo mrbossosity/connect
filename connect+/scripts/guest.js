@@ -73,16 +73,19 @@ function initCall(id, myStream) {
             vid.play()
         }
 
-        var vidWidth, vidHeight;
+        var vidWidth;
         if ((connectedPeers.length % 2) == 0) {
             vidWidth = (100 / (connectedPeers.length)) - (1 / connectedPeers.length);
         } else {
-            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
+            vidWidth = (100 / ((connectedPeers.length + 1) / 2)) - (1 / connectedPeers.length);
+        }
+        if (connectedPeers.length == 1) {
+            vidWidth = 49
         }
         let width = `${vidWidth}%`;
         $(".video-holder").css('width', width)
         if ((connectedPeers.length > 1)) {
-            $(".video-holder").css('max-height', '48%')
+            $(".video-holder").css('max-height', '48.5%')
         }
 
         $("#av-buttons").show(300);
@@ -131,16 +134,19 @@ function answerCall(call, myStream) {
             vid.play()
         }
 
-        var vidWidth, vidHeight;
+        var vidWidth;
         if ((connectedPeers.length % 2) == 0) {
             vidWidth = (100 / (connectedPeers.length)) - (1 / connectedPeers.length);
         } else {
-            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
+            vidWidth = (100 / ((connectedPeers.length + 1) / 2)) - (1 / connectedPeers.length);
+        }
+        if (connectedPeers.length == 1) {
+            vidWidth = 49
         }
         let width = `${vidWidth}%`;
         $(".video-holder").css('width', width)
         if ((connectedPeers.length > 1)) {
-            $(".video-holder").css('max-height', '48%')
+            $(".video-holder").css('max-height', '48.5%')
         }
 
         $("#av-buttons").show(300);
