@@ -99,11 +99,11 @@ function initCall(id, stream) {
         }
 
         var vidWidth
-        if (calls.length < 2) {
-            vidWidth = (100 / (calls.length + 2)) - (1 / calls.length);
+        if (connectedPeers.length < 2) {
+            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
             let width = `${vidWidth}%`;
             $(".video-holder").css('width', width)
-        } else if (connectedPeers.length == 2) {
+        } else {
             $(".video-holder").css('width', '45%');
             $(".video-holder").css('max-height', '45%')
         }
@@ -181,10 +181,10 @@ function answerCall(call, myStream) {
 
         var vidWidth
         if (connectedPeers.length < 2) {
-            vidWidth = (100 / (connectedPeers.length + 2)) - (1 / connectedPeers.length);
+            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
             let width = `${vidWidth}%`;
             $(".video-holder").css('width', width)
-        } else if (connectedPeers.length == 2) {
+        } else {
             $(".video-holder").css('width', '45%');
             $(".video-holder").css('max-height', '45%')
         }
@@ -237,8 +237,8 @@ function makePeer(id) {
     .then(() => {
         getMyStream(peer);
         peer.on('call', (call) => {
-            calls.push(call)
-            console.log(connectedPeers, calls)
+            calls.push(call);
+            connectedPeers.push(call.peer)
             answerCall(call, myStream)
         })
     
@@ -246,18 +246,13 @@ function makePeer(id) {
             conn.on('open', () => {
                 console.log('Received data connection!')
                 conn.on('data', (data) => {
-                    for (var x = 0; x < data.length; x++) {
-                        var an_id = data[x];
-                        console.log(an_id)
-                        if (an_id !== peerID) {
-                            console.log(`must call ${an_id}`);
-                            var newPeer = data;
-                            connectedPeers.push(newPeer);
-                            console.log(newPeer);
-                            initCall(newPeer, myStream)
-                            conn.close()
-                        }
-                        conn.close()
+                    console.log(data)
+                    if (data !== peerID) {
+                        console.log(`must call ${an_id}`);
+                        var newPeer = data;
+                        connectedPeers.push(newPeer);
+                        console.log(newPeer);
+                        initCall(newPeer, myStream)
                     }
                 });
             })
@@ -293,6 +288,7 @@ function connectionFunctions() {
     $("#call-modal").hide(300);
     $("#video-container").show();
     var callerID = $("#mtg-id").val();
+    connectedPeers.push(callerID)
     initCall(callerID, myStream)
 }
 

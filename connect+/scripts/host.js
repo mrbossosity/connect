@@ -103,9 +103,8 @@ function answerCall(call, myStream) {
         var destID = connectedPeers[x]
         var conn = peer.connect(destID);
         conn.on('open', () => {
-            conn.send(connectedPeers);
-            console.log(`connected to ${destID}! sent ${connectedPeers}`);
-            conn.close()
+            conn.send(call.peer);
+            console.log(`connected to ${destID}! sent ${call.peer}`);
         })
     }
 
