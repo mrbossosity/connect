@@ -99,14 +99,14 @@ function answerCall(call, myStream) {
 
     call.answer(myStream);
 
-    for (var x = 0; x < connectedPeers.length; x++) {
-        var destID = connectedPeers[x]
-        var conn = peer.connect(destID);
-        conn.on('open', () => {
-            conn.send(call.peer);
-            console.log(`connected to ${destID}! sent ${call.peer}`);
-        })
-    }
+    openDataConns.forEach(openConn => openConn.send(call.peer));
+    var destID = call.peer;
+    var conn = peer.connect(destID);
+    conn.on('open', () => {
+        conn.send(call.peer);
+        openDataConns.push(conn);
+        console.log(`connected to ${destID}! sent ${call.peer}`);
+    })
 
     var vidHTML = `<div class="video-holder"><video class="video-stream" id="${call.peer}" autoplay></video></div>`;
     $("#video-container").append(vidHTML);
@@ -143,13 +143,13 @@ function answerCall(call, myStream) {
         try {call.close(); console.log('call closed')} catch {};
         try {peer.disconnect(); console.log('peer disconnected')} catch {};
         try {peer.destroy(); console.log('peer destroyed')} catch{};
+        try {openDataConns.forEach(conn => conn.close())} catch{};
         alert(`Oops! Call broke. ${err}`);
         window.location.reload(true)
     })
 }
 
-var connectedPeers = []
-var calls = []
+var connectedPeers = [], calls = [], openDataConns = [];
 function getMyStream(peer) {
     navigator.mediaDevices.getUserMedia({
         audio: true, 
@@ -212,6 +212,7 @@ $("#username, #peer-id").on('keydown', (e) => {
 
 $("#banner-orange").on('click', () => {
     try {
+        openDataConns.forEach(conn => conn.close());
         calls.forEach(call => call.close());
         alert('Call ended!');
     } catch {

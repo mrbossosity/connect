@@ -248,10 +248,9 @@ function makePeer(id) {
                 conn.on('data', (data) => {
                     console.log(data)
                     if (data !== peerID) {
-                        console.log(`must call ${an_id}`);
+                        console.log(`will call ${data}`);
                         var newPeer = data;
                         connectedPeers.push(newPeer);
-                        console.log(newPeer);
                         initCall(newPeer, myStream)
                     }
                 });
