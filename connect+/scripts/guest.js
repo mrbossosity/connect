@@ -252,7 +252,7 @@ function makePeer(id) {
                             var newPeer = data;
                             connectedPeers.push(newPeer);
                             console.log(newPeer);
-                            peer.call(newPeer, myStream)
+                            initCall(newPeer, myStream)
                             conn.close()
                         }
                     }
