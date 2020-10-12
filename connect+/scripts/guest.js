@@ -57,8 +57,8 @@ function disableAV(e, audioTracks, videoTracks) {
     }
 }
 
-function initCall(id, stream) {
-    var call = peer.call(id, stream, {
+function initCall(id, myStream) {
+    var call = peer.call(id, myStream, {
         metadata: { 'username': username }
     })
 
@@ -73,14 +73,16 @@ function initCall(id, stream) {
             vid.play()
         }
 
-        var vidWidth
-        if (connectedPeers.length < 2) {
-            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
-            let width = `${vidWidth}%`;
-            $(".video-holder").css('width', width)
+        var vidWidth, vidHeight;
+        if ((connectedPeers.length % 2) == 0) {
+            vidWidth = (100 / (connectedPeers.length)) - (1 / connectedPeers.length);
         } else {
-            $(".video-holder").css('width', '45%');
-            $(".video-holder").css('max-height', '45%')
+            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
+        }
+        let width = `${vidWidth}%`;
+        $(".video-holder").css('width', width)
+        if ((connectedPeers.length > 1)) {
+            $(".video-holder").css('max-height', '48%')
         }
 
         $("#av-buttons").show(300);
@@ -88,12 +90,12 @@ function initCall(id, stream) {
         $("#banner-orange").show();
     })
     call.on('close', () => {
-        stream.getTracks().forEach(track => track.stop());
+        myStream.getTracks().forEach(track => track.stop());
         try {peer.disconnect(); console.log('peer disconnected')} catch {};
         try {peer.destroy(); console.log('peer destroyed')} catch{};
     })
     call.on('error', (err) => {
-        stream.getTracks().forEach(track => track.stop());
+        myStream.getTracks().forEach(track => track.stop());
         try {calls.close(); console.log('call closed')} catch {};
         try {peer.disconnect(); console.log('peer disconnected')} catch {};
         try {peer.destroy(); console.log('peer destroyed')} catch{};
@@ -129,14 +131,16 @@ function answerCall(call, myStream) {
             vid.play()
         }
 
-        var vidWidth
-        if (connectedPeers.length < 2) {
-            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
-            let width = `${vidWidth}%`;
-            $(".video-holder").css('width', width)
+        var vidWidth, vidHeight;
+        if ((connectedPeers.length % 2) == 0) {
+            vidWidth = (100 / (connectedPeers.length)) - (1 / connectedPeers.length);
         } else {
-            $(".video-holder").css('width', '45%');
-            $(".video-holder").css('max-height', '45%')
+            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
+        }
+        let width = `${vidWidth}%`;
+        $(".video-holder").css('width', width)
+        if ((connectedPeers.length > 1)) {
+            $(".video-holder").css('max-height', '48%')
         }
 
         $("#av-buttons").show(300);
@@ -219,11 +223,10 @@ function makePeer(id) {
     
         peer.on('connection', (conn) => {
             conn.on('open', () => {
-                console.log('Received data connection!')
                 conn.on('data', (data) => {
-                    console.log(data)
+                    console.log(`Received ${data}`);
                     if (data !== peerID) {
-                        console.log(`will call ${data}`);
+                        console.log(`calling ${data}...`);
                         var newPeer = data;
                         connectedPeers.push(newPeer);
                         initCall(newPeer, myStream)
@@ -284,6 +287,6 @@ $("#banner-orange").on('click', () => {
         alert('Call ended!');
         window.location.reload(true)
     } catch {
-        console.log('error closing call')
+        console.log('Error closing call!')
     }
 })

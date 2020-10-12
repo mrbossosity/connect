@@ -93,14 +93,16 @@ function answerCall(call, myStream) {
             vid.play()
         }
 
-        var vidWidth
-        if (connectedPeers.length < 2) {
-            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
-            let width = `${vidWidth}%`;
-            $(".video-holder").css('width', width)
+        var vidWidth, vidHeight;
+        if ((connectedPeers.length % 2) == 0) {
+            vidWidth = (100 / (connectedPeers.length)) - (1 / connectedPeers.length);
         } else {
-            $(".video-holder").css('width', '45%');
-            $(".video-holder").css('max-height', '45%')
+            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
+        }
+        let width = `${vidWidth}%`;
+        $(".video-holder").css('width', width)
+        if ((connectedPeers.length > 1)) {
+            $(".video-holder").css('max-height', '48%')
         }
 
         $("#av-buttons").show(300);
@@ -175,7 +177,6 @@ function makePeer(id) {
         peer.on('call', (call) => {
             calls.push(call);
             connectedPeers.push(call.peer);
-            console.log(connectedPeers);
             answerCall(call, myStream)
         })
         peer.on('error', (err) => {
@@ -207,7 +208,6 @@ $("#username, #peer-id").on('keydown', (e) => {
         firstFunctions()
     }
 })
-
 
 $("#banner-orange").on('click', () => {
     try {
