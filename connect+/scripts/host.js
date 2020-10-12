@@ -101,9 +101,11 @@ function answerCall(call, myStream) {
 
     for (a_peer in connectedPeers) {
         var conn = peer.connect(a_peer);
-        conn.send(connectedPeers);
-        console.log(`connected to peer! sent ${connectedPeers}`)
-        conn.close()
+        conn.on('open', () => {
+            conn.send(connectedPeers);
+            console.log(`connected to ${a_peer}! sent ${connectedPeers}`);
+            conn.close()
+        })
     }
 
     var vidHTML = `<div class="video-holder"><video class="video-stream" id="${call.peer}" autoplay></video></div>`;

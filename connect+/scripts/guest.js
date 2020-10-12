@@ -243,20 +243,23 @@ function makePeer(id) {
         })
     
         peer.on('connection', (conn) => {
-            console.log('Received data connection!')
-            conn.on('data', (data) => {
-                for (an_id in data) {
-                    if (an_id !== peerID) {
-                        console.log(`must call ${an_id}`);
-                        var newPeer = data;
-                        connectedPeers.push(newPeer);
-                        console.log(newPeer);
-                        peer.call(newPeer, myStream)
-                        conn.close()
+            conn.on('open', () => {
+                console.log('Received data connection!')
+                conn.on('data', (data) => {
+                    for (an_id in data) {
+                        if (an_id !== peerID) {
+                            console.log(`must call ${an_id}`);
+                            var newPeer = data;
+                            connectedPeers.push(newPeer);
+                            console.log(newPeer);
+                            peer.call(newPeer, myStream)
+                            conn.close()
+                        }
                     }
-                }
-            });
+                });
+            })
         })
+
         peer.on('error', (err) => {
             $("#banner").show();
             $("#banner-orange").hide();
