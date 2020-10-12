@@ -99,11 +99,11 @@ function answerCall(call, myStream) {
 
     call.answer(myStream);
 
-    for (a_peer in connectedPeers) {
-        var conn = peer.connect(a_peer);
+    for (var x = 0; x < connectedPeers.length; x++) {
+        var conn = peer.connect(connectedPeers[x]);
         conn.on('open', () => {
             conn.send(connectedPeers);
-            console.log(`connected to ${a_peer}! sent ${connectedPeers}`);
+            console.log(`connected to ${connectedPeers[x]}! sent ${connectedPeers}`);
             conn.close()
         })
     }

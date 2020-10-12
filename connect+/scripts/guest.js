@@ -268,7 +268,8 @@ function makePeer(id) {
             $("#username").focus();
             try {peer.disconnect(); console.log('peer disconnected')} catch {};
             try {peer.destroy(); console.log('peer destroyed')} catch{};
-            alert(`Oops! Something went wrong. Try again or refresh. ${err}`)
+            alert(`Oops! Something went wrong. Try again or refresh. ${err}`);
+            window.location.reload(true)
             
         })
     })
