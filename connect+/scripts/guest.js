@@ -112,19 +112,17 @@ function initCall(id, stream) {
         $("#banner").hide();
         $("#banner-orange").show();
     })
+    call.on('close', () => {
+        stream.getTracks().forEach(track => track.stop());
+        try {peer.disconnect(); console.log('peer disconnected')} catch {};
+        try {peer.destroy(); console.log('peer destroyed')} catch{};
+    })
     call.on('error', (err) => {
         stream.getTracks().forEach(track => track.stop());
         try {calls.close(); console.log('call closed')} catch {};
         try {peer.disconnect(); console.log('peer disconnected')} catch {};
         try {peer.destroy(); console.log('peer destroyed')} catch{};
         alert(`Oops! Call broke. ${err}`);
-        window.location.reload(true)
-    })
-    call.on('close', () => {
-        stream.getTracks().forEach(track => track.stop());
-        try {peer.disconnect(); console.log('peer disconnected')} catch {};
-        try {peer.destroy(); console.log('peer destroyed')} catch{};
-        alert('Call ended!');
         window.location.reload(true)
     })
 }
@@ -199,7 +197,6 @@ function answerCall(call, myStream) {
         myStream.getTracks().forEach(track => track.stop());
         try {peer.disconnect(); console.log('peer disconnected')} catch {};
         try {peer.destroy(); console.log('peer destroyed')} catch{};
-        window.location.reload(true)
     })
     call.on('error', (err) => {
         myStream.getTracks().forEach(track => track.stop());
@@ -237,7 +234,7 @@ function makePeer(id) {
         peer.on('call', (call) => {
             calls.push(call)
             console.log(connectedPeers, calls)
-            answerCall(call, stream)
+            answerCall(call, myStream)
         })
     
         peer.on('connection', (conn) => {
@@ -296,6 +293,7 @@ $("#banner-orange").on('click', () => {
     try {
         calls.forEach(call => call.close());
         alert('Call ended!');
+        window.location.reload(true)
     } catch {
         console.log('error closing call')
     }
