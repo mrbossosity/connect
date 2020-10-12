@@ -58,31 +58,6 @@ function disableAV(e, audioTracks, videoTracks) {
 }
 
 function initCall(id, stream) {
-    aEnabled = true; vEnabled = true;
-    var audioTracks = stream.getAudioTracks();
-    var videoTracks = stream.getVideoTracks();
-    $(document).on('keydown', (e) => {
-        disableAV(e, audioTracks, videoTracks)
-    })
-    $("#audio-control").click(() => {
-        if (aEnabled) {
-            audioTracks.forEach(track => track.enabled = false);
-            aEnabled = false
-        } else {
-            audioTracks.forEach(track => track.enabled = true);
-            aEnabled = true
-        }
-    })
-    $("#video-control").click(() => {
-        if (vEnabled) {
-            videoTracks.forEach(track => track.enabled = false);
-            vEnabled = false
-        } else {
-            videoTracks.forEach(track => track.enabled = true);
-            vEnabled = true
-        }
-    })
-
     var call = peer.call(id, stream, {
         metadata: { 'username': username }
     })
@@ -142,31 +117,6 @@ function answerCall(call, myStream) {
         myVid.play()
     }
 
-    aEnabled = true; vEnabled = true;
-    var audioTracks = myStream.getAudioTracks();
-    var videoTracks = myStream.getVideoTracks();
-    $(document).on('keydown', (e) => {
-        disableAV(e, audioTracks, videoTracks)
-    })
-    $("#audio-control").click(() => {
-        if (aEnabled) {
-            audioTracks.forEach(track => track.enabled = false);
-            aEnabled = false
-        } else {
-            audioTracks.forEach(track => track.enabled = true);
-            aEnabled = true
-        }
-    })
-    $("#video-control").click(() => {
-        if (vEnabled) {
-            videoTracks.forEach(track => track.enabled = false);
-            vEnabled = false
-        } else {
-            videoTracks.forEach(track => track.enabled = true);
-            vEnabled = true
-        }
-    })
-
     call.answer(myStream);
     
     var vidHTML = `<div class="video-holder"><video class="video-stream" id="${call.peer}" autoplay></video></div>`;
@@ -223,6 +173,31 @@ async function getMyStream(peer) {
     vid.onloadedmetadata = (e) => {
         vid.play()
     }
+
+    aEnabled = true; vEnabled = true;
+    var audioTracks = myStream.getAudioTracks();
+    var videoTracks = myStream.getVideoTracks();
+    $(document).on('keydown', (e) => {
+        disableAV(e, audioTracks, videoTracks)
+    })
+    $("#audio-control").click(() => {
+        if (aEnabled) {
+            audioTracks.forEach(track => track.enabled = false);
+            aEnabled = false
+        } else {
+            audioTracks.forEach(track => track.enabled = true);
+            aEnabled = true
+        }
+    })
+    $("#video-control").click(() => {
+        if (vEnabled) {
+            videoTracks.forEach(track => track.enabled = false);
+            vEnabled = false
+        } else {
+            videoTracks.forEach(track => track.enabled = true);
+            vEnabled = true
+        }
+    })
 }
 
 function makePeer(id) {

@@ -72,31 +72,6 @@ function answerCall(call, myStream) {
         myVid.play()
     }
 
-    aEnabled = true; vEnabled = true;
-    var audioTracks = myStream.getAudioTracks();
-    var videoTracks = myStream.getVideoTracks();
-    $(document).on('keydown', (e) => {
-        disableAV(e, audioTracks, videoTracks)
-    })
-    $("#audio-control").click(() => {
-        if (aEnabled) {
-            audioTracks.forEach(track => track.enabled = false);
-            aEnabled = false
-        } else {
-            audioTracks.forEach(track => track.enabled = true);
-            aEnabled = true
-        }
-    })
-    $("#video-control").click(() => {
-        if (vEnabled) {
-            videoTracks.forEach(track => track.enabled = false);
-            vEnabled = false
-        } else {
-            videoTracks.forEach(track => track.enabled = true);
-            vEnabled = true
-        }
-    })
-
     call.answer(myStream);
 
     openDataConns.forEach(openConn => openConn.send(call.peer));
@@ -149,22 +124,40 @@ function answerCall(call, myStream) {
     })
 }
 
-var connectedPeers = [], calls = [], openDataConns = [];
-function getMyStream(peer) {
-    navigator.mediaDevices.getUserMedia({
+var myStream, connectedPeers = [], calls = [], openDataConns = [];
+async function getMyStream(peer) {
+    myStream = await navigator.mediaDevices.getUserMedia({
         audio: true, 
         video: {
             width: 720,
             height: 480,
             facingMode: 'user'
         }
-    }).then((stream) => {
-        peer.on('call', (call) => {
-            calls.push(call);
-            connectedPeers.push(call.peer);
-            console.log(connectedPeers);
-            answerCall(call, stream)
-        })
+    })
+
+    aEnabled = true; vEnabled = true;
+    var audioTracks = myStream.getAudioTracks();
+    var videoTracks = myStream.getVideoTracks();
+    $(document).on('keydown', (e) => {
+        disableAV(e, audioTracks, videoTracks)
+    })
+    $("#audio-control").click(() => {
+        if (aEnabled) {
+            audioTracks.forEach(track => track.enabled = false);
+            aEnabled = false
+        } else {
+            audioTracks.forEach(track => track.enabled = true);
+            aEnabled = true
+        }
+    })
+    $("#video-control").click(() => {
+        if (vEnabled) {
+            videoTracks.forEach(track => track.enabled = false);
+            vEnabled = false
+        } else {
+            videoTracks.forEach(track => track.enabled = true);
+            vEnabled = true
+        }
     })
 }
 
@@ -178,7 +171,13 @@ function makePeer(id) {
     console.log(peer);
     var delay = Promise.resolve()
     .then(() => {
-        getMyStream(peer)
+        getMyStream(peer);
+        peer.on('call', (call) => {
+            calls.push(call);
+            connectedPeers.push(call.peer);
+            console.log(connectedPeers);
+            answerCall(call, myStream)
+        })
         peer.on('error', (err) => {
             $("#banner").show();
             $("#banner-orange").hide();
