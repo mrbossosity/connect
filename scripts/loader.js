@@ -15,5 +15,4 @@ window.addEventListener('beforeunload', function(e) {
     try {
         peer.destroy()
     } catch {}
-    //e.returnValue = ''
 })
