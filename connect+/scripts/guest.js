@@ -209,7 +209,7 @@ function answerCall(call, myStream) {
 }
 
 var calls = [], myStream, connectedPeers;
-function getMyStream(peer) {
+async function getMyStream(peer) {
     myStream = await navigator.mediaDevices.getUserMedia({
         audio: true, 
         video: {
