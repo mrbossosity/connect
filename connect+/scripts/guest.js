@@ -99,11 +99,11 @@ function initCall(id, stream) {
         }
 
         var vidWidth
-        if (calls.length < 3) {
-            vidWidth = (100 / (calls.length + 1)) - (1 / calls.length);
+        if (calls.length < 2) {
+            vidWidth = (100 / (calls.length + 2)) - (1 / calls.length);
             let width = `${vidWidth}%`;
             $(".video-holder").css('width', width)
-        } else if (connectedPeers.length == 3) {
+        } else if (connectedPeers.length == 2) {
             $(".video-holder").css('width', '45%');
             $(".video-holder").css('max-height', '45%')
         }
@@ -180,11 +180,11 @@ function answerCall(call, myStream) {
         }
 
         var vidWidth
-        if (connectedPeers.length < 3) {
-            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
+        if (connectedPeers.length < 2) {
+            vidWidth = (100 / (connectedPeers.length + 2)) - (1 / connectedPeers.length);
             let width = `${vidWidth}%`;
             $(".video-holder").css('width', width)
-        } else if (connectedPeers.length == 3) {
+        } else if (connectedPeers.length == 2) {
             $(".video-holder").css('width', '45%');
             $(".video-holder").css('max-height', '45%')
         }
@@ -208,7 +208,7 @@ function answerCall(call, myStream) {
     })
 }
 
-var calls = [], myStream, connectedPeers;
+var calls = [], myStream, connectedPeers = [];
 async function getMyStream(peer) {
     myStream = await navigator.mediaDevices.getUserMedia({
         audio: true, 
@@ -218,6 +218,11 @@ async function getMyStream(peer) {
             facingMode: 'user'
         }
     })
+    var vid = document.getElementById("myVid")
+    vid.srcObject = myStream;
+    vid.onloadedmetadata = (e) => {
+        vid.play()
+    }
 }
 
 function makePeer(id) {
@@ -238,10 +243,12 @@ function makePeer(id) {
         })
     
         peer.on('connection', (conn) => {
+            console.log('Received data connection!')
             conn.on('data', (data) => {
-                connectedPeers = data;
-                console.log(connectedPeers);
-                connectedPeers.forEach(id => initCall(id, myStream))
+                var newPeer = data;
+                connectedPeers.push(newPeer);
+                console.log(newPeer);
+                peer.call(newPeer, myStream)
                 conn.close()
             });
         })
@@ -274,7 +281,7 @@ function connectionFunctions() {
     $("#call-modal").hide(300);
     $("#video-container").show();
     var callerID = $("#mtg-id").val();
-    initCall(callerID)
+    initCall(callerID, myStream)
 }
 
 $("#username, #peer-id").on('keydown', (e) => {
