@@ -101,7 +101,8 @@ function answerCall(call, myStream) {
 
     for (a_peer in connectedPeers) {
         var conn = peer.connect(a_peer);
-        conn.send(call.peer);
+        conn.send(connectedPeers);
+        console.log(`connected to peer! sent ${connectedPeers}`)
         conn.close()
     }
 
@@ -117,7 +118,7 @@ function answerCall(call, myStream) {
 
         var vidWidth
         if (connectedPeers.length < 2) {
-            vidWidth = (100 / (connectedPeers.length + 2)) - (1 / connectedPeers.length);
+            vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
             let width = `${vidWidth}%`;
             $(".video-holder").css('width', width)
         } else {
@@ -157,10 +158,9 @@ function getMyStream(peer) {
         }
     }).then((stream) => {
         peer.on('call', (call) => {
-            calls.push(call)
-            console.log(connectedPeers, calls)
-            answerCall(call, stream)
+            calls.push(call);
             connectedPeers.push(call.peer);
+            answerCall(call, stream)
         })
     })
 }
