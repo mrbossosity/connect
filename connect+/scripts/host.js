@@ -100,10 +100,11 @@ function answerCall(call, myStream) {
     call.answer(myStream);
 
     for (var x = 0; x < connectedPeers.length; x++) {
-        var conn = peer.connect(connectedPeers[x]);
+        var destID = connectedPeers[x]
+        var conn = peer.connect(destID);
         conn.on('open', () => {
             conn.send(connectedPeers);
-            console.log(`connected to ${connectedPeers[x]}! sent ${connectedPeers}`);
+            console.log(`connected to ${destID}! sent ${connectedPeers}`);
             conn.close()
         })
     }
@@ -162,6 +163,7 @@ function getMyStream(peer) {
         peer.on('call', (call) => {
             calls.push(call);
             connectedPeers.push(call.peer);
+            console.log(connectedPeers);
             answerCall(call, stream)
         })
     })
