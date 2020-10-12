@@ -99,8 +99,8 @@ function answerCall(call, myStream) {
 
     call.answer(myStream);
 
-    for (peer in connectedPeers) {
-        var conn = peer.connect(peer);
+    for (a_peer in connectedPeers) {
+        var conn = peer.connect(a_peer);
         conn.send(call.peer);
         conn.close()
     }
@@ -195,7 +195,6 @@ function firstFunctions() {
         getInfo();
         makePeer(peerID);
         welcome(username, peerID);
-        $("#call-id").focus()
     } catch {
         alert('Oops! Something went wrong. Try again or refresh.')
     }

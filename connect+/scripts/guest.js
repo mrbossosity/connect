@@ -271,7 +271,7 @@ function firstFunctions() {
         getInfo();
         makePeer(peerID);
         welcome(username, peerID);
-        $("#call-id").focus()
+        $("#mtg-id").focus()
     } catch {
         alert('Oops! Something went wrong. Try again or refresh.')
     }
