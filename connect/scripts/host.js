@@ -75,11 +75,21 @@ function answerCall(call, myStream) {
     call.answer(myStream);
 
     var destID = call.peer;
-    openDataConns.forEach(openConn => openConn.send(destID));
+    openDataConns.forEach(openConn => openConn.send(`GOBBLEDYGOOK CALL THIS PEER:${destID}`));
     var conn = peer.connect(destID);
     conn.on('open', () => {
         openDataConns.push(conn);
         console.log(`connected to peer ${destID}!`);
+        conn.on('data', (data) => {
+            var text = data;
+            openDataConns.forEach(openConn => openConn.send(text));
+            var msg = `<p class="in-chat-message">${data}</p>`;
+            $("#chat-modal").append(msg);
+            if ($("#chat-modal").is(":hidden")) {
+                $("#chat-modal").show(200);
+            }
+            $("#chat-modal").scrollTop(1E8);
+        })
     })
 
     var vidHTML = `<div class="video-holder"><video class="video-stream" id="${call.peer}" autoplay></video></div>`;
@@ -219,4 +229,29 @@ $("#banner-orange").on('click', () => {
     } catch {
         console.log('error closing call')
     }
+})
+
+$("#chat-input").on('keydown', (e) => {
+    if (e.keyCode === 13) {
+        var str = $("#chat-input").val();
+        var text = `${username}: ${str}`;
+        openDataConns.forEach(openConn => openConn.send(text));
+        var msg = `<p class="out-chat-message">Me: ${str}</p>`;
+        $("#chat-modal").append(msg);
+        $("#chat-modal").scrollTop(1E8);
+        $("#chat-input").val('')
+    }
+})
+
+$("#chat-control").click(() => {
+    if ($("#chat-modal").is(":visible")) {
+        $("#chat-modal").hide(200);
+    } else {
+        $("#chat-modal").show(200);
+        $("#chat-modal").scrollTop(1E8);
+    }
+})
+
+$("#close-chat-modal").click(() => {
+    $("#chat-modal").hide(300)
 })

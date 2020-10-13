@@ -226,14 +226,30 @@ function makePeer(id) {
         peer.on('connection', (conn) => {
             conn.on('open', () => {
                 conn.on('data', (data) => {
-                    console.log(`Received ${data}`);
-                    if (data !== peerID) {
-                        console.log(`calling ${data}...`);
-                        var newPeer = data;
+                    var regExp = /GOBBLEDYGOOK CALL THIS PEER:/
+                    var regExp2 = new RegExp(`${username}:`)
+                    if ((regExp).test(data)) {
+                        var str = data;
+                        newPeer = str.substr(28);
                         connectedPeers.push(newPeer);
-                        initCall(newPeer, myStream)
+                        initCall(newPeer, myStream);
+                        console.log(`calling ${newPeer}...`);
+                    } else {
+                        var msg = ((regExp2).test(data)) ? `<p class="out-chat-message">${data}</p>`:`<p class="in-chat-message">${data}</p>`
+                        $("#chat-modal").append(msg);
+                        if ($("#chat-modal").is(":hidden")) {
+                            $("#chat-modal").show(200);
+                        }
+                        $("#chat-modal").scrollTop(1E8);
                     }
                 });
+                $("#chat-input").on('keyup', (e) => {
+                    if (e.keyCode === 13) {
+                        var text = $("#chat-input").val();
+                        conn.send(`${username}: ${text}`);
+                        $("#chat-input").val('')
+                    }
+                })
             })
         })
 
@@ -291,4 +307,17 @@ $("#banner-orange").on('click', () => {
     } catch {
         console.log('Error closing call!')
     }
+})
+
+$("#chat-control").click(() => {
+    if ($("#chat-modal").is(":visible")) {
+        $("#chat-modal").hide(200);
+    } else {
+        $("#chat-modal").show(200);
+        $("#chat-modal").scrollTop(1E8);
+    }
+})
+
+$("#close-chat-modal").click(() => {
+    $("#chat-modal").hide(300)
 })
