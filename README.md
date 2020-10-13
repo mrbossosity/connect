@@ -2,7 +2,7 @@
 Dabbling in real-time web chatting through [Peer.js](https://peerjs.com/), a brilliant API which wraps WebRTC. Here lives a web app not unlike Zoom which hosts live video calls between peers. Now supports group meetings!
 
 ### PeerJS
-The core of the Peer API is the `Peer` object, which brokers a secure connection between the browser and a remote server. Each user is assigned a `Peer` with a unique Peer ID when they log onto Connect. The `.call(id, stream, metadata)` and `.connect(id)` methods allow peers to remotely establish `dataConnection`s and `MediaConnection`s with other peers on the server.
+The core of the Peer API is the `Peer` object, which brokers a secure connection between the browser and a remote server. Each user is assigned a `Peer` with a unique Peer ID when they log onto Connect. The `.connect(id)` and `.call(id, stream, metadata)` methods allow peers to remotely establish data and media connections with other peers on the server.
 
 ### Hosts
 A random 6-digit "meeting ID" is automatically generated for each meeting. The host may assign a custom ID to their meeting if they wish. This "meeting ID" simply becomes the Peer ID of the host. Thus, guests join the "meeting" by calling the host's Peer ID. NOTE: The host is responsible for communicating their ID with whomever wishes to join the meeting. 
@@ -10,12 +10,26 @@ A random 6-digit "meeting ID" is automatically generated for each meeting. The h
 ### Guests
 Guests are prompted to give their peer a username. This username is separate from the peer's uniquely generated peer ID, and is communicated to the host as a string passed in the `metadata` argument of the `.call()` method. 
 
-    var call = peer.call(hostID, myStream, {
+### Handling Calls
+Upon joining a meeting, each guest peer sends a `MediaStream` object (captured from the front webcam) to the host via the `stream` argument of the `.call()` method:
+
+    var call = peer.call(hostID, aUserStream, {
         metadata: { 'username': username }
     })
 
-### Handling Calls
-Upon joining a meeting, each guest peer sends a `MediaStream` object (captured from the front webcam) to the host via the `stream` argument of the `.call()` method. The host sends its `MediaStream` in return upon answering the call. The host also establishes a `DataConnection` with each guest. At this point, the host can see each guest's stream, but each guest can see only their own stream and the stream of the host. This is no problem for one-on-one meetings, but what about...
+The host sends its `MediaStream` in return upon answering the call: 
+(simplified and abridged code)
+
+    peer.on('call', (call) => {
+        //extract the guest's username from metadata
+        var peerName = call.metadata.username;
+        alert(`${peerName} joined the meeting!`);
+        
+        //send own stream
+        call.answer(hostStream)
+    })
+
+The host also establishes a `DataConnection` with each guest. At this point, the host can see each guest's stream, but each guest can see only their own stream and the stream of the host. This is no problem for one-on-one meetings, but what about...
 
 *Group calls?*
 
