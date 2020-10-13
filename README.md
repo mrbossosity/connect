@@ -17,19 +17,24 @@ Upon joining a meeting, each guest peer sends a `MediaStream` object (captured f
         metadata: { 'username': username }
     })
 
-The host sends its `MediaStream` in return upon answering the call: 
+The host extracts the guest's username and sends its `MediaStream` in return upon answering the call: 
 (simplified and abridged code)
 
     peer.on('call', (call) => {
-        //extract the guest's username from metadata
         var peerName = call.metadata.username;
         alert(`${peerName} joined the meeting!`);
-        
-        //send own stream
         call.answer(hostStream)
     })
 
-The host also establishes a `DataConnection` with each guest. At this point, the host can see each guest's stream, but each guest can see only their own stream and the stream of the host. This is no problem for one-on-one meetings, but what about...
+The host also establishes a `DataConnection` with each guest:
+
+    peer.on('call', (call) => {
+        ...
+        var guestID = call.peer //ID of guest who initiated the call
+        var conn = peer.connect(guestID)
+    })
+
+At this point, the host is receiving each guest's stream, but each guest is receiving only their own stream and the stream of the host. This is no problem for one-on-one meetings, but what about...
 
 *Group calls?*
 
