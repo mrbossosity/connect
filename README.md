@@ -13,7 +13,7 @@ Guests are prompted to give their peer a username. This username is separate fro
 ### Handling Calls
 Upon joining a meeting, each guest peer sends a `MediaStream` object (captured from the front webcam) to the host via the `stream` argument of the `.call()` method:
 
-    var call = peer.call(hostID, aUserStream, {
+    var call = peer.call(hostID, guestStream, {
         metadata: { 'username': username }
     })
 
