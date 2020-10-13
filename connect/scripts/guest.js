@@ -12,11 +12,7 @@ function makeID() {
 }
 
 function getID() {
-    if ($("#peer-id").val() !== '') {
-        peerID = $("#peer-id").val()
-    } else {
-        peerID = makeID()
-    }
+    peerID = makeID()
 }
 
 function getInfo() {
@@ -275,7 +271,7 @@ function connectionFunctions() {
     initCall(callerID, myStream)
 }
 
-$("#username, #peer-id").on('keydown', (e) => {
+$("#username").on('keydown', (e) => {
     if (e.keyCode === 13) {
         firstFunctions()
     }

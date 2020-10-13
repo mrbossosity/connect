@@ -1,0 +1,118 @@
+body {
+    margin: 0;
+    font-family: 'Nanum Gothic';
+}
+
+#top {
+    height: 15vh; width: 100vw;
+    background-color: white;
+    border-bottom: 0.28vw solid darkgray; 
+    display: flex;
+}
+
+#top-left, #top-middle, #top-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#banner {
+    width: 100%; height: auto;
+    font-size: 2.6vh;
+    letter-spacing: 0.18vw;
+    text-align: center;
+    font-family: 'Nanum Gothic';
+    color: rgb(38,35,38);
+    background-color: rgb(251,251,251);
+    border: 0.1em solid dodgerblue; 
+    border-radius: 20em;
+    box-shadow: 0.065em 0.16em 0.2em gray;
+    padding: 2.2vw 3.2vw;
+    margin: auto;
+    z-index: 2;
+}
+
+#banner-orange {
+    width: 100%; height: auto;
+    font-size: 2.6vw;
+    letter-spacing: 0.18vw;
+    text-align: center;
+    font-family: 'Nanum Gothic';
+    color: rgb(38,35,38);
+    background-color: rgb(251,251,251);
+    border: 0.1em solid darkorange; 
+    border-radius: 20em;
+    box-shadow: 0.065em 0.16em 0.2em rgb(240,160,0);
+    padding: 2.2vw 3.2vw;
+    margin: auto;
+    z-index: 2;
+}
+
+#main-content {
+    height: 77vh;
+    background-color: rgb(22,20,21);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-modal {
+    height: 42vh; width: 65%;
+    background-color: rgb(251,251,251);
+    border: 0.28vw solid darkgray;
+    border-radius: 2.75vw;
+    box-shadow: 0.4vw 0.4vw 2vw black;
+    text-align: center;
+}
+
+#modal-top {
+    height: 30%;
+}
+
+#welcome {
+    height: 100%;
+    font-size: 5vw;
+    padding-left: 5%; padding-right: 5%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    text-align: center;
+}
+
+#inputs-container {
+    width: 100%; height: 50.25%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 1.2vh;
+}
+
+.button-holder {
+    width: 100%; height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#link-to-host {
+    font-size: 3vh;
+    text-align: center;
+    font-family: 'Nanum Gothic';
+    color: rgb(38,35,38);
+    background-color: rgb(251,251,251);
+    border: 0.1em solid dodgerblue; 
+    border-radius: 20em;
+    box-shadow: 0.025em 0.08em 0.1em gray;
+    padding: 0.6vh 1.9vh;
+}
+
+#link-to-guest {
+    font-size: 3vh;
+    text-align: center;
+    font-family: 'Nanum Gothic';
+    color: rgb(38,35,38);
+    background-color: rgb(251,251,251);
+    border: 0.1em solid darkorange; 
+    border-radius: 20em;
+    box-shadow: 0.025em 0.08em 0.1em gray;
+    padding: 0.6vh 1.9vh;
+}
