@@ -45,14 +45,14 @@ We again use the `DataConnection` between host and guest to create a simple chat
     $("#chat-input").on('keyup', (e) => {
         if (e.keyCode === 13) {
             var text = $("#chat-input").val();
-            conn.send(`${username}: ${text}`);
-            $("#chat-input").val('')
+            conn.send(`${username}: ${text}`)
         }
     })
 
 The host sends this string to all connected peers across their respective `dataConnections` (including the original sender), and each peer (including the host) renders the string as a paragraph element in their own chatbox:
 
     conn.on('data', (data) => {
+        ...
         var msg = `<p class="in-chat-message">${data}</p>`;
         $("#chat-modal").append(msg)
     })
