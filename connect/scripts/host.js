@@ -168,8 +168,8 @@ async function getMyStream(peer) {
             sampleRate: {min: 22050, ideal: 32000, max: 48000}
         }, 
         video: {
-            width: {ideal: 720, max: 720 },
-            height: {ideal: 540, max: 720},
+            width: {min: 240, ideal: 720, max: 720 },
+            height: {min: 180, ideal: 540, max: 720},
             frameRate: {min: 12, ideal: 24, max: 30},
             facingMode: 'user'
         }
