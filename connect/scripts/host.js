@@ -163,10 +163,14 @@ function answerCall(call, myStream) {
 var myStream, connectedPeers = [], calls = [], openDataConns = [];
 async function getMyStream(peer) {
     myStream = await navigator.mediaDevices.getUserMedia({
-        audio: true, 
+        audio: {
+            sampleSize: 16,
+            sampleRate: {min: 22050, ideal: 32000, max: 48000}
+        }, 
         video: {
-            width: 720,
-            height: 480,
+            width: {ideal: 720, max: 720 },
+            height: {ideal: 540, max: 720},
+            frameRate: {min: 12, ideal: 24, max: 30},
             facingMode: 'user'
         }
     })
