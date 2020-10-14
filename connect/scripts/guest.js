@@ -53,6 +53,30 @@ function disableAV(e, audioTracks, videoTracks) {
     }
 }
 
+function resizeVids() {
+    var vidWidth;
+    if (0 < connectedPeers.length <= 2) {
+        vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
+    } 
+    if (connectedPeers.length > 2 && (connectedPeers.length + 1) % 2 == 0) {
+        vidWidth = ((100 / (connectedPeers.length + 1)) * 2) - ((1 / connectedPeers.length) * 2)
+    }
+    if (connectedPeers.length > 2 && (connectedPeers.length + 1) % 2 !== 0) {
+        vidWidth = (100 / ((connectedPeers.length / 2) + 1)) - (1 / ((connectedPeers.length) / 2) + 1)
+    }
+    if (connectedPeers.length == 0) {
+        console.log('no peers');
+        vidWidth = 98
+    }
+    let width = `${vidWidth}%`;
+    $(".video-holder").css('width', width)
+    if (connectedPeers.length <= 2) {
+        $(".video-holder").css('max-height', '100%')
+    } else {
+        $(".video-holder").css('max-height', '48.5%')
+    }                                   
+}
+
 function initCall(id, myStream) {
     var call = peer.call(id, myStream, {
         metadata: { 'username': username }
@@ -69,20 +93,7 @@ function initCall(id, myStream) {
             vid.play()
         }
 
-        var vidWidth;
-        if ((connectedPeers.length % 2) == 0) {
-            vidWidth = (100 / (connectedPeers.length)) - (1 / connectedPeers.length);
-        } else {
-            vidWidth = (100 / ((connectedPeers.length + 1) / 2)) - (1 / connectedPeers.length);
-        }
-        if (connectedPeers.length == 1) {
-            vidWidth = 49
-        }
-        let width = `${vidWidth}%`;
-        $(".video-holder").css('width', width)
-        if ((connectedPeers.length > 1)) {
-            $(".video-holder").css('max-height', '48.5%')
-        }
+        resizeVids();
 
         $("#av-buttons").show(300);
         $("#banner").hide();
@@ -105,7 +116,6 @@ function initCall(id, myStream) {
 
 function answerCall(call, myStream) {
     var peerName = call.metadata.username;
-    alert(`${peerName} joined the meeting!`);
 
     if ($("#call-modal").is(":visible")) {
         $("#call-modal").hide(300);
@@ -130,20 +140,7 @@ function answerCall(call, myStream) {
             vid.play()
         }
 
-        var vidWidth;
-        if ((connectedPeers.length % 2) == 0) {
-            vidWidth = (100 / (connectedPeers.length)) - (1 / connectedPeers.length);
-        } else {
-            vidWidth = (100 / ((connectedPeers.length + 1) / 2)) - (1 / connectedPeers.length);
-        }
-        if (connectedPeers.length == 1) {
-            vidWidth = 49
-        }
-        let width = `${vidWidth}%`;
-        $(".video-holder").css('width', width)
-        if ((connectedPeers.length > 1)) {
-            $(".video-holder").css('max-height', '48.5%')
-        }
+        resizeVids();
 
         $("#av-buttons").show(300);
         $("#banner").hide();
@@ -156,7 +153,7 @@ function answerCall(call, myStream) {
     })
     call.on('error', (err) => {
         myStream.getTracks().forEach(track => track.stop());
-        try {call.close(); console.log('call closed')} catch {};
+        try {calls.close(); console.log('call closed')} catch {};
         try {peer.disconnect(); console.log('peer disconnected')} catch {};
         try {peer.destroy(); console.log('peer destroyed')} catch{};
         alert(`Oops! Call broke. ${err}`);
@@ -226,14 +223,21 @@ function makePeer(id) {
         peer.on('connection', (conn) => {
             conn.on('open', () => {
                 conn.on('data', (data) => {
-                    var regExp = /GOBBLEDYGOOK CALL THIS PEER:/
-                    var regExp2 = new RegExp(`${username}:`)
-                    if ((regExp).test(data)) {
+                    var regExp2 = new RegExp(`${username}:`);
+                    if ((/GOBBLEDYGOOK CALL THIS PEER:/).test(data)) {
                         var str = data;
                         newPeer = str.substr(28);
                         connectedPeers.push(newPeer);
                         initCall(newPeer, myStream);
-                        console.log(`calling ${newPeer}...`);
+                        console.log(`calling ${newPeer}...`)
+                    } else if ((/APHANTASIA!:/).test(data)) {
+                        var str = data;
+                        var leftID = str.substr(12);
+                        console.log(`will remove ${leftID} from DOM and connectedPeers`)
+                        var connToRemove = connectedPeers.indexOf(leftID);
+                        connectedPeers.splice(connToRemove, 1);
+                        $(`${leftID}`).closest('div').remove();
+                        resizeVids();
                     } else {
                         var msg = ((regExp2).test(data)) ? `<p class="out-chat-message">${data}</p>`:`<p class="in-chat-message">${data}</p>`
                         $("#chat-modal").append(msg);
@@ -302,7 +306,7 @@ $("#mtg-id").on('keydown', (e) => {
 $("#banner-orange").on('click', () => {
     try {
         calls.forEach(call => call.close());
-        alert('Call ended!');
+        alert('Left the meeting!');
         window.location.reload(true)
     } catch {
         console.log('Error closing call!')

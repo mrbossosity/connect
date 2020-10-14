@@ -57,6 +57,30 @@ function disableAV(e, audioTracks, videoTracks) {
     }
 }
 
+function resizeVids() {
+    var vidWidth;
+    if (0 < connectedPeers.length <= 2) {
+        vidWidth = (100 / (connectedPeers.length + 1)) - (1 / connectedPeers.length);
+    } 
+    if (connectedPeers.length > 2 && (connectedPeers.length + 1) % 2 == 0) {
+        vidWidth = ((100 / (connectedPeers.length + 1)) * 2) - ((1 / connectedPeers.length) * 2)
+    }
+    if (connectedPeers.length > 2 && (connectedPeers.length + 1) % 2 !== 0) {
+        vidWidth = (100 / ((connectedPeers.length / 2) + 1)) - (1 / ((connectedPeers.length) / 2) + 1)
+    }
+    if (connectedPeers.length == 0) {
+        console.log('no peers');
+        vidWidth = 98
+    }
+    let width = `${vidWidth}%`;
+    $(".video-holder").css('width', width)
+    if (connectedPeers.length <= 2) {
+        $(".video-holder").css('max-height', '100%')
+    } else {
+        $(".video-holder").css('max-height', '48.5%')
+    }                                   
+}
+
 function answerCall(call, myStream) {
     var peerName = call.metadata.username;
     alert(`${peerName} joined the meeting!`);
@@ -79,7 +103,6 @@ function answerCall(call, myStream) {
     var conn = peer.connect(destID);
     conn.on('open', () => {
         openDataConns.push(conn);
-        console.log(`connected to peer ${destID}!`);
         conn.on('data', (data) => {
             var text = data;
             openDataConns.forEach(openConn => openConn.send(text));
@@ -90,6 +113,18 @@ function answerCall(call, myStream) {
             }
             $("#chat-modal").scrollTop(1E8);
         })
+    })
+    conn.on('close', () => {
+        var leftID = `#${conn.peer}`;
+        console.log(leftID);
+        var connToRemove = openDataConns.indexOf(conn);
+        openDataConns.splice(connToRemove, 1);
+        connectedPeers.splice(connToRemove, 1);
+        $(`${leftID}`).closest('div').remove();
+        resizeVids();
+        openDataConns.forEach((openConn) => {
+            openConn.send(`APHANTASIA!:${leftID}`);
+        });
     })
 
     var vidHTML = `<div class="video-holder"><video class="video-stream" id="${call.peer}" autoplay></video></div>`;
@@ -102,20 +137,7 @@ function answerCall(call, myStream) {
             vid.play()
         }
 
-        var vidWidth;
-        if ((connectedPeers.length % 2) == 0) {
-            vidWidth = (100 / (connectedPeers.length)) - (1 / connectedPeers.length);
-        } else {
-            vidWidth = (100 / ((connectedPeers.length + 1) / 2)) - (1 / connectedPeers.length);
-        }
-        if (connectedPeers.length == 1) {
-            vidWidth = 49
-        }
-        let width = `${vidWidth}%`;
-        $(".video-holder").css('width', width)
-        if ((connectedPeers.length > 1)) {
-            $(".video-holder").css('max-height', '48.5%')
-        }
+        resizeVids();
 
         $("#av-buttons").show(300);
         $("#banner").hide();
