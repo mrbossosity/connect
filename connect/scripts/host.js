@@ -251,7 +251,7 @@ $("#banner-orange").on('click', () => {
     try {
         openDataConns.forEach(conn => conn.close());
         calls.forEach(call => call.close());
-        alert('Call ended!');
+        alert('Ended the meeting!');
     } catch {
         console.log('error closing call')
     }
