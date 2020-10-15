@@ -259,6 +259,11 @@ function makePeer(id) {
                     }
                 })
             })
+            conn.on('close', () => {
+                calls.forEach(call => call.close());
+                alert('Meeting ended by host!');
+                window.location.reload(true)
+            })
         })
 
         peer.on('error', (err) => {
@@ -313,7 +318,7 @@ $("#banner-orange").on('click', () => {
         alert('Left the meeting!');
         window.location.reload(true)
     } catch {
-        console.log('Error closing call!')
+        window.location.reload(true)
     }
 })
 
