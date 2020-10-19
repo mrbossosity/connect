@@ -37,17 +37,21 @@ function disableAV(e, audioTracks, videoTracks) {
     if (e.altKey && e.keyCode === 65) {
         if (aEnabled) {
             audioTracks.forEach(track => track.enabled = false);
+            $("#audio-control").css('background-color', 'red');
             aEnabled = false
         } else {
             audioTracks.forEach(track => track.enabled = true);
+            $("#audio-control").css('background-color', 'dodgerblue');
             aEnabled = true
         }
     } else if (e.altKey && e.keyCode === 86) {
         if (vEnabled) {
             videoTracks.forEach(track => track.enabled = false);
+            $("#video-control").css('background-color', 'red');
             vEnabled = false
         } else {
             videoTracks.forEach(track => track.enabled = true);
+            $("#video-control").css('background-color', 'darkorange');
             vEnabled = true
         }
     }
@@ -190,18 +194,22 @@ async function getMyStream(peer) {
     $("#audio-control").click(() => {
         if (aEnabled) {
             audioTracks.forEach(track => track.enabled = false);
+            $(this).css('background-color', 'red');
             aEnabled = false
         } else {
             audioTracks.forEach(track => track.enabled = true);
+            $(this).css('background-color', 'dodgerblue');
             aEnabled = true
         }
     })
     $("#video-control").click(() => {
         if (vEnabled) {
             videoTracks.forEach(track => track.enabled = false);
+            $(this).css('background-color', 'red');
             vEnabled = false
         } else {
             videoTracks.forEach(track => track.enabled = true);
+            $(this).css('background-color', 'darkorange');
             vEnabled = true
         }
     })
